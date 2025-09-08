@@ -47,7 +47,6 @@ class _PostApiScreenState extends State<PostApiScreen> {
     }
     
     try {
-      // Register to backend (without role)
       final result = await AuthenticationAPI.registerUser(
         email: email,
         password: password,
@@ -66,10 +65,7 @@ class _PostApiScreenState extends State<PostApiScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Registrasi berhasil sebagai ${selectedRole == 'owner' ? 'Pemilik' : 'Pelanggan'}"))
       );
-      
       PreferenceHandler.saveToken(user?.data?.token.toString() ?? "");
-      
-      // Navigate based on role
       if (selectedRole == "owner") {
         Navigator.pushReplacementNamed(context, "/buttomNav");
       } else {

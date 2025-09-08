@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:laundry_jaya/utils/role_checker.dart';
 import 'package:laundry_jaya/views/home.dart';
-import 'package:laundry_jaya/views/order_screen.dart';
 import 'package:laundry_jaya/views/owner_screen.dart';
 import 'package:laundry_jaya/views/profile_screen.dart';
-import 'package:laundry_jaya/views/riwayat_screen.dart'; // Buat file baru untuk dashboard owner
+import 'package:laundry_jaya/views/riwayat_screen.dart'; 
 
 class ButtomNav extends StatefulWidget {
   const ButtomNav({super.key});
@@ -29,8 +28,8 @@ class _ButtomNavState extends State<ButtomNav> {
     
     setState(() {
       _widgetOptions = isOwner 
-          ? <Widget>[OwnerDashboard(), ProfileAPIScreen()] // Untuk owner
-          : <Widget>[HomeScreen(), RiwayatPesananScreen(), ProfileAPIScreen()]; // Untuk customer
+          ? <Widget>[OwnerDashboard(), ProfileAPIScreen()]
+          : <Widget>[HomeScreen(), RiwayatPesananScreen(), ProfileAPIScreen()]; 
     });
   }
 

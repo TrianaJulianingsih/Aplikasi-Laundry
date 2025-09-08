@@ -8,7 +8,6 @@ import 'package:laundry_jaya/views/edit_kategori.dart';
 import 'package:laundry_jaya/views/home.dart';
 import 'package:laundry_jaya/views/item_screen.dart';
 import 'package:laundry_jaya/views/login_api_screen.dart';
-import 'package:laundry_jaya/views/order_screen.dart';
 import 'package:laundry_jaya/views/owner_screen.dart';
 import 'package:laundry_jaya/views/profile_screen.dart';
 import 'package:laundry_jaya/views/riwayat_screen.dart';

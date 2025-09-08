@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:laundry_jaya/api/items.dart';
 import 'package:laundry_jaya/api/kategori.dart';
 import 'package:laundry_jaya/extension/navigtaion.dart';
 import 'package:laundry_jaya/models/get_kategori_model.dart';
-import 'package:laundry_jaya/models/item_model.dart';
-import 'package:laundry_jaya/models/kategori_model.dart';
 import 'package:laundry_jaya/shared_preferences/shared_preferences.dart';
 import 'package:laundry_jaya/views/item_screen.dart';
 import 'package:laundry_jaya/views/tambah_item_screen.dart';

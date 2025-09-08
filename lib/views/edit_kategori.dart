@@ -106,7 +106,6 @@ class _EditKategoriScreenState extends State<EditKategoriScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Row(
-                    // mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       IconButton(
                         onPressed: () {

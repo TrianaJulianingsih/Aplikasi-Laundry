@@ -3,7 +3,7 @@ import 'package:laundry_jaya/api/orders.dart';
 import 'package:laundry_jaya/models/get_order_model.dart';
 
 class BuatPesananScreen extends StatefulWidget {
-  final Map<int, int> selectedItems; // id item dan quantity
+  final Map<int, int> selectedItems;
   final double totalPrice;
   static const id = "/buatpesanan";
 
@@ -44,7 +44,6 @@ class _BuatPesananScreenState extends State<BuatPesananScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Row(
-                    // mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       IconButton(
                         onPressed: () {

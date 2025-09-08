@@ -25,7 +25,7 @@ class _RiwayatPesananScreenState extends State<RiwayatPesananScreen> {
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 70), // biar ga ketutup header
+            padding: const EdgeInsets.only(top: 70), 
             child: FutureBuilder<GetOrderModel>(
               future: _orderFuture,
               builder: (context, snapshot) {

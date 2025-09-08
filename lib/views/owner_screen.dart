@@ -4,7 +4,6 @@ import 'package:laundry_jaya/api/kategori.dart';
 import 'package:laundry_jaya/extension/navigtaion.dart';
 import 'package:laundry_jaya/models/get_kategori_model.dart';
 import 'package:laundry_jaya/models/item_model.dart';
-import 'package:laundry_jaya/models/kategori_model.dart';
 import 'package:laundry_jaya/views/edit_kategori.dart';
 import 'package:laundry_jaya/views/hapus_kategori.dart';
 import 'package:laundry_jaya/views/tambah_item_screen.dart';

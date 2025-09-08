@@ -67,7 +67,7 @@ class _ProfileAPIScreenState extends State<ProfileAPIScreen> {
     } catch (e) {
       print("Logout error: $e");
 
-      // PreferenceHandler.removeAll();
+      PreferenceHandler.removeAll();
 
       Navigator.pushNamed(context, '/loginapi');
 
