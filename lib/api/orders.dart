@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:laundry_jaya/api/endpoint/endpoint.dart';
 import 'package:laundry_jaya/models/add_item_model.dart';
 import 'package:laundry_jaya/models/add_order_model.dart';
+import 'package:laundry_jaya/models/change_status_model.dart';
 import 'package:laundry_jaya/models/get_order_model.dart';
 import 'package:laundry_jaya/models/item_model.dart';
 import 'package:laundry_jaya/shared_preferences/shared_preferences.dart';
@@ -60,4 +61,35 @@ class OrdersAPI {
       throw Exception(error["message"] ?? "Gagal mengambil data order");
     }
   }
+
+  static Future<ChangeStatusModel> updateStatus({
+    required int orderId, 
+    required String status,
+  }) async {
+    final url = Uri.parse("${Endpoint.order}/$orderId/status");
+    final token = await PreferenceHandler.getToken();
+
+    print("Update Profile URL: $url");
+    print("Update Profile Data: {status: $status}");
+
+    final response = await http.post(
+      url,
+      body: {"status": status},
+      headers: {"Accept": "application/json", "Authorization": "Bearer $token"},
+    );
+
+    print("Update Profile Response: ${response.statusCode}");
+    print("Update Profile Body: ${response.body}");
+
+    if (response.statusCode == 200) {
+      return ChangeStatusModel.fromJson(json.decode(response.body));
+    } else {
+      final error = json.decode(response.body);
+      throw Exception(
+        error["message"] ??
+            "Update profile gagal. Status: ${response.statusCode}",
+      );
+    }
+  }
+
 }

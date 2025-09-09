@@ -6,6 +6,7 @@ class PreferenceHandler {
   static const String userIdKey = "user_id";
   static const String userEmailKey = "user_email";
   static const String userNameKey = "user_name";
+  static const String loginKey = "login";
 
   static void saveToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
@@ -72,5 +73,10 @@ class PreferenceHandler {
   static Future<bool> isLoggedIn() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(tokenKey) != null;
+  }
+
+  static Future<bool?> getLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(loginKey);
   }
 }

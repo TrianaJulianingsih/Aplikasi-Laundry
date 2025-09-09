@@ -7,10 +7,12 @@ import 'package:laundry_jaya/views/buttomNav.dart';
 import 'package:laundry_jaya/views/edit_kategori.dart';
 import 'package:laundry_jaya/views/home.dart';
 import 'package:laundry_jaya/views/item_screen.dart';
+import 'package:laundry_jaya/views/lihat_pesanan_screen.dart';
 import 'package:laundry_jaya/views/login_api_screen.dart';
 import 'package:laundry_jaya/views/owner_screen.dart';
 import 'package:laundry_jaya/views/profile_screen.dart';
 import 'package:laundry_jaya/views/riwayat_screen.dart';
+import 'package:laundry_jaya/views/splash_screen.dart';
 import 'package:laundry_jaya/views/tambah_item_screen.dart';
 import 'package:laundry_jaya/views/tambah_kategori_screen.dart';
 
@@ -44,7 +46,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: LoginScreen(),
+      home: SplashScreen(),
       routes: {
         LoginScreen.id: (context) => LoginScreen(),
         ProfileAPIScreen.id: (context) => ProfileAPIScreen(),
@@ -54,6 +56,7 @@ class MyApp extends StatelessWidget {
         TambahItemScreen.id: (context) => TambahItemScreen(),
         OwnerDashboard.id: (context) => OwnerDashboard(),
         RiwayatPesananScreen.id: (context) => RiwayatPesananScreen(),
+        // LihatPesananScreen.id: (context) => LihatPesananScreen(),
         ItemScreen.id: (context) {
           final args =
               ModalRoute.of(context)!.settings.arguments

@@ -57,6 +57,7 @@ class _RiwayatPesananScreenState extends State<RiwayatPesananScreen> {
                           children: [
                             Text("Tanggal: ${order.createdAt?.toLocal()}", style: TextStyle(fontFamily: "OpenSans_Regular"),),
                             ...items.map((i) => Text("• ${i.serviceItem?.name}", style: TextStyle(fontFamily: "OpenSans_Regular"))),
+                            Text("Harga: ${order.total}", style: TextStyle(fontFamily: "OpenSans_SemiBold", color: Color(0xFFFFB74D)),),
                           ],
                         ),
                         trailing: Container(

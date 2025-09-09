@@ -98,15 +98,40 @@ class _MyWidgetState extends State<LoginScreen> {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            Container(
-              height: double.infinity,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage("assets/images/background.jpg"),
+            Stack(
+              children: [
+                Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Color(0xFF03A9F4)
+                  ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, left: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 30,
+                        backgroundImage: AssetImage("assets/images/logo.png"),
+                      ),
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 30,
+                        backgroundImage: AssetImage("assets/images/logo.png"),
+                      ),
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 30,
+                        backgroundImage: AssetImage("assets/images/logo.png"),
+                      ),
+                    ],
+                  ),
+                ),
+                
+              ],
             ),
             Container(
               padding: EdgeInsets.only(top: 68),
@@ -138,9 +163,9 @@ class _MyWidgetState extends State<LoginScreen> {
                   SizedBox(height: 12),
 
                   Padding(
-                    padding: const EdgeInsets.only(right: 20, left: 35),
+                    padding: const EdgeInsets.only(right: 140),
                     child: Text(
-                      "Selamat datang kembali di Laundry Jaya. Have a good time",
+                      "Cucian selesai, kamu santai.",
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,

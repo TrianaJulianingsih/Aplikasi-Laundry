@@ -61,8 +61,8 @@ class KategoriAPI {
 
   static Future<UpdateKategoriModel> updateCategory({
     required int id,
-  required String name,
-  File? image,
+    required String name,
+    File? image,
   }) async {
     final url = Uri.parse("${Endpoint.kategori}/$id");
     final token = await PreferenceHandler.getToken();
