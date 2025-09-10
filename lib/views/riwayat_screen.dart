@@ -25,7 +25,7 @@ class _RiwayatPesananScreenState extends State<RiwayatPesananScreen> {
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 70), 
+            padding: const EdgeInsets.only(top: 70),
             child: FutureBuilder<GetOrderModel>(
               future: _orderFuture,
               builder: (context, snapshot) {
@@ -43,7 +43,6 @@ class _RiwayatPesananScreenState extends State<RiwayatPesananScreen> {
                   itemBuilder: (context, index) {
                     final order = orders[index];
                     final items = order.items ?? [];
-
                     return Card(
                       color: Colors.white,
                       margin: const EdgeInsets.symmetric(
@@ -51,12 +50,25 @@ class _RiwayatPesananScreenState extends State<RiwayatPesananScreen> {
                         vertical: 6,
                       ),
                       child: ListTile(
-                        title: Text(order.layanan ?? "Tanpa Layanan", style: TextStyle(fontFamily: "OpenSans_SemiBold"),),
+                        title: Text(
+                          order.layanan ?? "Tanpa Layanan",
+                          style: TextStyle(fontFamily: "OpenSans_SemiBold"),
+                        ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Tanggal: ${order.createdAt?.toLocal()}", style: TextStyle(fontFamily: "OpenSans_Regular"),),
-                            ...items.map((i) => Text("• ${i.serviceItem?.name}", style: TextStyle(fontFamily: "OpenSans_Regular"))),
+                            Text(
+                              "Tanggal: ${order.createdAt?.toLocal()}",
+                              style: TextStyle(fontFamily: "OpenSans_Regular"),
+                            ),
+                            ...items.map(
+                              (i) => Text(
+                                "• ${i.serviceItem?.name}",
+                                style: TextStyle(
+                                  fontFamily: "OpenSans_Regular",
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                         trailing: Container(
@@ -64,9 +76,9 @@ class _RiwayatPesananScreenState extends State<RiwayatPesananScreen> {
                           width: 40,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color:order.status == "selesai"
-                                  ? Color(0xFF0D47A1)
-                                  : Color(0xFFFFB74D),
+                            color: order.status == "selesai"
+                                ? Color(0xFF0D47A1)
+                                : Color(0xFFFFB74D),
                           ),
                           child: Center(
                             child: Text(
@@ -80,6 +92,9 @@ class _RiwayatPesananScreenState extends State<RiwayatPesananScreen> {
                             ),
                           ),
                         ),
+                        onTap: () {
+                          // context.pushNamed(DetailOrderScreen.id);
+                        },
                       ),
                     );
                   },

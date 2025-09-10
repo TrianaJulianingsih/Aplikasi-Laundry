@@ -52,8 +52,13 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: Color(0xFF03A9F4),
-            title: Center(child: Text("Pilih Kategori untuk Edit", style: TextStyle(fontFamily: "OpenSans_SemiBold", fontSize: 20),)),
-            content: Container(
+            title: Center(
+              child: Text(
+                "Pilih Kategori untuk Edit",
+                style: TextStyle(fontFamily: "OpenSans_SemiBold", fontSize: 20),
+              ),
+            ),
+            content: SizedBox(
               width: double.maxFinite,
               child: ListView.builder(
                 shrinkWrap: true,
@@ -64,24 +69,27 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                     child: ListTile(
                       leading: kategori.imageUrl != null
                           ? Padding(
-                            padding: const EdgeInsets.all(5),
-                            child: Container(
-                              height: 90,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                color: Color(0xFF03A9F4),
-                                borderRadius: BorderRadius.circular(8)
-                              ),
-                              child: Image.network(
+                              padding: const EdgeInsets.all(5),
+                              child: Container(
+                                height: 90,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFF03A9F4),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Image.network(
                                   kategori.imageUrl!,
                                   width: 40,
                                   height: 40,
                                   fit: BoxFit.cover,
                                 ),
-                            ),
-                          )
+                              ),
+                            )
                           : Icon(Icons.category),
-                      title: Text(kategori.name ?? "", style: TextStyle(fontFamily: "OpenSans_Regular"),),
+                      title: Text(
+                        kategori.name ?? "",
+                        style: TextStyle(fontFamily: "OpenSans_Regular"),
+                      ),
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.pushNamed(
@@ -100,7 +108,14 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text("Batal", style: TextStyle(fontFamily: "Baloo", fontSize: 16, color: Colors.white),),
+                child: Text(
+                  "Batal",
+                  style: TextStyle(
+                    fontFamily: "Baloo",
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ],
           );
@@ -146,10 +161,10 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                           ),
                         ),
                       ),
-                      IconButton(
-                        icon: Icon(Icons.refresh),
-                        onPressed: _loadData,
-                      ),
+                      // IconButton(
+                      //   icon: Icon(Icons.refresh),
+                      //   onPressed: _loadData,
+                      // ),
                     ],
                   ),
                 ),

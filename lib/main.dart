@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:laundry_jaya/models/get_kategori_model.dart';
 import 'package:laundry_jaya/views/buat_pesanan_screen.dart';
@@ -11,6 +9,7 @@ import 'package:laundry_jaya/views/login_api_screen.dart';
 import 'package:laundry_jaya/views/owner_screen.dart';
 import 'package:laundry_jaya/views/profile_screen.dart';
 import 'package:laundry_jaya/views/riwayat_screen.dart';
+import 'package:laundry_jaya/views/splash_screen.dart';
 import 'package:laundry_jaya/views/tambah_item_screen.dart';
 import 'package:laundry_jaya/views/tambah_kategori_screen.dart';
 
@@ -44,7 +43,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: LoginScreen(),
+      home: SplashScreen(),
       routes: {
         LoginScreen.id: (context) => LoginScreen(),
         ProfileAPIScreen.id: (context) => ProfileAPIScreen(),
@@ -54,6 +53,7 @@ class MyApp extends StatelessWidget {
         TambahItemScreen.id: (context) => TambahItemScreen(),
         OwnerDashboard.id: (context) => OwnerDashboard(),
         RiwayatPesananScreen.id: (context) => RiwayatPesananScreen(),
+        // DetailOrderScreen.id: (context) => DetailOrderScreen(),
         ItemScreen.id: (context) {
           final args =
               ModalRoute.of(context)!.settings.arguments

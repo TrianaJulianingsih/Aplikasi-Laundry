@@ -1,11 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:laundry_jaya/api/items.dart';
 import 'package:laundry_jaya/api/kategori.dart';
-import 'package:laundry_jaya/extension/navigtaion.dart';
 import 'package:laundry_jaya/models/get_kategori_model.dart';
 import 'package:laundry_jaya/models/item_model.dart';
-import 'package:laundry_jaya/models/kategori_model.dart';
 import 'package:laundry_jaya/views/buat_pesanan_screen.dart';
 
 class ItemScreen extends StatefulWidget {
@@ -210,10 +207,7 @@ class _ItemScreenState extends State<ItemScreen> {
                 );
               }).toList(),
             ),
-
           Divider(),
-
-          // Total harga
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -252,7 +246,6 @@ class _ItemScreenState extends State<ItemScreen> {
                     ),
                   ),
                 ).then((value) {
-                  // Jika order berhasil, reset selected items
                   if (value == true) {
                     setState(() {
                       selectedItems.clear();
