@@ -161,10 +161,6 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                           ),
                         ),
                       ),
-                      // IconButton(
-                      //   icon: Icon(Icons.refresh),
-                      //   onPressed: _loadData,
-                      // ),
                     ],
                   ),
                 ),
@@ -255,7 +251,9 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                       "Lihat Pesanan",
                       Icons.list_alt,
                       Color(0xFFFFB74D),
-                      () {},
+                      () {
+                        // context.pushNamed(LihatPesananScreen.id);
+                      },
                     ),
                     _buildActionButton(
                       "Edit Kategori",

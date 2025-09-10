@@ -8,5 +8,7 @@ class Endpoint {
   static const String kategori = "$baseURL/categories";
   static const String layanan = "$baseURL/layanan";
   static const String items = "$baseURL/items";
+  static const String status = "$baseURL/orders";
+  static String statusEndpoint(int orderId) => "$baseURL/orders/$orderId/status";
   static const String logout = "$baseURL/logout";
 }

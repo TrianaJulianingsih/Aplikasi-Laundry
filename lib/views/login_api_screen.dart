@@ -106,7 +106,7 @@ class _MyWidgetState extends State<LoginScreen> {
                   decoration: BoxDecoration(color: Color(0xFF03A9F4)),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20, left: 10),
+                  padding: const EdgeInsets.only(top: 20, left: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -130,7 +130,6 @@ class _MyWidgetState extends State<LoginScreen> {
                 ),
               ],
             ),
-
             Container(
               padding: EdgeInsets.only(top: 68),
               height: 744,
@@ -275,7 +274,12 @@ class _MyWidgetState extends State<LoginScreen> {
                     child: ElevatedButton(
                       onPressed: isLoading ? null : loginUser,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF03A9F4),
+                        backgroundColor: const Color.fromARGB(
+                          255,
+                          111,
+                          30,
+                          192,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),

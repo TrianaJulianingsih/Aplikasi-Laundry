@@ -28,7 +28,7 @@ class _ButtomNavState extends State<ButtomNav> {
     
     setState(() {
       _widgetOptions = isOwner 
-          ? <Widget>[OwnerDashboard(), ProfileAPIScreen()]
+          ? <Widget>[OwnerDashboard(), RiwayatPesananScreen(), ProfileAPIScreen()]
           : <Widget>[HomeScreen(), RiwayatPesananScreen(), ProfileAPIScreen()]; 
     });
   }

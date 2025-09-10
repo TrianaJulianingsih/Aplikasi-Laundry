@@ -69,6 +69,13 @@ class _RiwayatPesananScreenState extends State<RiwayatPesananScreen> {
                                 ),
                               ),
                             ),
+                            Text(
+                              "Harga: ${order.total}",
+                              style: TextStyle(
+                                fontFamily: "OpenSans_SemiBold",
+                                color: Color(0xFFFFB74D),
+                              ),
+                            ),
                           ],
                         ),
                         trailing: Container(

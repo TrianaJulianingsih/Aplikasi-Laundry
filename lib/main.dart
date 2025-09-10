@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         TambahItemScreen.id: (context) => TambahItemScreen(),
         OwnerDashboard.id: (context) => OwnerDashboard(),
         RiwayatPesananScreen.id: (context) => RiwayatPesananScreen(),
-        // DetailOrderScreen.id: (context) => DetailOrderScreen(),
+        // LihatPesananScreen.id: (context) => LihatPesananScreen(),
         ItemScreen.id: (context) {
           final args =
               ModalRoute.of(context)!.settings.arguments
