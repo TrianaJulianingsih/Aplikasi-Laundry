@@ -6,7 +6,7 @@ import 'package:laundry_jaya/shared_preferences/shared_preferences.dart';
 class PostApiScreen extends StatefulWidget {
   const PostApiScreen({super.key});
   static const id = '/post_api_screen';
-  
+
   @override
   State<PostApiScreen> createState() => _PostApiScreenState();
 }
@@ -23,9 +23,7 @@ class _PostApiScreenState extends State<PostApiScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(children: [buildBackground(), buildLayer()])
-    );
+    return Scaffold(body: Stack(children: [buildBackground(), buildLayer()]));
   }
 
   void registerUser() async {
@@ -33,37 +31,41 @@ class _PostApiScreenState extends State<PostApiScreen> {
       isLoading = true;
       errorMessage = null;
     });
-    
+
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
     final name = nameController.text.trim();
-    
+
     if (email.isEmpty || password.isEmpty || name.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Semua field harus diisi")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Semua field harus diisi")));
       setState(() => isLoading = false);
       return;
     }
-    
+
     try {
       final result = await AuthenticationAPI.registerUser(
         email: email,
         password: password,
         name: name,
       );
-      
+
       // Save role locally
       PreferenceHandler.saveUserRole(selectedRole);
       PreferenceHandler.saveUserEmail(email);
       PreferenceHandler.saveUserName(name);
-      
+
       setState(() {
         user = result;
       });
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Registrasi berhasil sebagai ${selectedRole == 'owner' ? 'Pemilik' : 'Pelanggan'}"))
+        SnackBar(
+          content: Text(
+            "Registrasi berhasil sebagai ${selectedRole == 'owner' ? 'Pemilik' : 'Pelanggan'}",
+          ),
+        ),
       );
       PreferenceHandler.saveToken(user?.data?.token.toString() ?? "");
       if (selectedRole == "owner") {
@@ -71,14 +73,13 @@ class _PostApiScreenState extends State<PostApiScreen> {
       } else {
         Navigator.pushReplacementNamed(context, "/buttomNav");
       }
-      
     } catch (e) {
       print("Register error: $e");
       setState(() {
         errorMessage = e.toString();
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Registrasi gagal: ${e.toString()}"))
+        SnackBar(content: Text("Registrasi gagal: ${e.toString()}")),
       );
     } finally {
       setState(() => isLoading = false);
@@ -95,11 +96,13 @@ class _PostApiScreenState extends State<PostApiScreen> {
             children: [
               Text(
                 "Daftar Akun Baru",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 25,
+                  fontFamily: "Montserrat_Bold",
+                  color: Colors.white,
+                ),
               ),
               height(24),
-              
-              // Role Selection
               buildTitle("Pilih Jenis Akun"),
               height(12),
               Container(
@@ -115,11 +118,17 @@ class _PostApiScreenState extends State<PostApiScreen> {
                     items: [
                       DropdownMenuItem(
                         value: "customer",
-                        child: Text("Pelanggan", style: TextStyle(fontSize: 16)),
+                        child: Text(
+                          "Pelanggan",
+                          style: TextStyle(fontSize: 16),
+                        ),
                       ),
                       DropdownMenuItem(
                         value: "owner",
-                        child: Text("Pemilik Laundry", style: TextStyle(fontSize: 16)),
+                        child: Text(
+                          "Pemilik Laundry",
+                          style: TextStyle(fontSize: 16),
+                        ),
                       ),
                     ],
                     onChanged: (value) {
@@ -131,7 +140,7 @@ class _PostApiScreenState extends State<PostApiScreen> {
                 ),
               ),
               height(16),
-              
+
               buildTitle("Nama Lengkap"),
               height(12),
               buildTextField(
@@ -139,7 +148,7 @@ class _PostApiScreenState extends State<PostApiScreen> {
                 controller: nameController,
               ),
               height(16),
-              
+
               buildTitle("Email"),
               height(12),
               buildTextField(
@@ -148,7 +157,7 @@ class _PostApiScreenState extends State<PostApiScreen> {
                 keyboardType: TextInputType.emailAddress,
               ),
               height(16),
-              
+
               buildTitle("Password"),
               height(12),
               buildTextField(
@@ -157,15 +166,14 @@ class _PostApiScreenState extends State<PostApiScreen> {
                 controller: passwordController,
               ),
               height(24),
-              
-              // Register Button
+
               SizedBox(
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
                   onPressed: isLoading ? null : registerUser,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Color(0xFF0D47A1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
@@ -176,14 +184,14 @@ class _PostApiScreenState extends State<PostApiScreen> {
                           "Daftar sebagai ${selectedRole == 'owner' ? 'Pemilik' : 'Pelanggan'}",
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                            fontFamily: "Baloo",
                             color: Colors.white,
                           ),
                         ),
                 ),
               ),
               height(16),
-              
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -196,7 +204,11 @@ class _PostApiScreenState extends State<PostApiScreen> {
                   ),
                   Text(
                     "Atau Masuk Dengan",
-                    style: TextStyle(fontSize: 12, color: Colors.white),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                      fontFamily: "OpenSans_Regular",
+                    ),
                   ),
                   Expanded(
                     child: Container(
@@ -208,7 +220,7 @@ class _PostApiScreenState extends State<PostApiScreen> {
                 ],
               ),
               height(16),
-              
+
               SizedBox(
                 height: 48,
                 child: ElevatedButton(
@@ -221,9 +233,9 @@ class _PostApiScreenState extends State<PostApiScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.login, color: Colors.blue),
+                      Icon(Icons.login, color: Color(0xFF0D47A1)),
                       width(8),
-                      Text("Login", style: TextStyle(color: Colors.blue)),
+                      Text("Login", style: TextStyle(color: Color(0xFF0D47A1))),
                     ],
                   ),
                 ),
@@ -239,12 +251,7 @@ class _PostApiScreenState extends State<PostApiScreen> {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/images/background.png"),
-          fit: BoxFit.cover,
-        ),
-      ),
+      decoration: const BoxDecoration(color: Color(0xFF03A9F4)),
     );
   }
 
@@ -260,6 +267,7 @@ class _PostApiScreenState extends State<PostApiScreen> {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
+        hintStyle: TextStyle(fontFamily: "OpenSans_Regular"),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
           borderSide: BorderSide(
@@ -305,7 +313,7 @@ class _PostApiScreenState extends State<PostApiScreen> {
         text,
         style: TextStyle(
           fontSize: 14,
-          fontWeight: FontWeight.bold,
+          fontFamily: "OpenSans_SemiBold",
           color: Colors.white,
         ),
       ),

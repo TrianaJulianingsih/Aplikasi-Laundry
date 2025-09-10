@@ -1,18 +1,19 @@
+// // File: views/order_management_screen.dart
 // import 'package:flutter/material.dart';
 // import 'package:laundry_jaya/api/orders.dart';
-// import 'package:laundry_jaya/models/get_order_model.dart';
 // import 'package:laundry_jaya/models/change_status_model.dart';
+// import 'package:laundry_jaya/models/get_order_model.dart';
 
 // class LihatPesananScreen extends StatefulWidget {
 //   const LihatPesananScreen({super.key});
-//   static const id = "/lihatpesanan";
+//   static const id = "/orderManagement";
 
 //   @override
 //   State<LihatPesananScreen> createState() => _LihatPesananScreenState();
 // }
 
 // class _LihatPesananScreenState extends State<LihatPesananScreen> {
-//   late Future<GetOrderModel> _orderFuture;
+//   late Future<ChangeStatusModel> _orderFuture;
 
 //   @override
 //   void initState() {
@@ -22,24 +23,20 @@
 
 //   void _loadOrders() {
 //     setState(() {
-//       _orderFuture = OrdersAPI.getOrders();
+//       _orderFuture = OrdersAPI.changeStatus(
+//         statusId: 0,
+//         status: '-',
+//       ); // Dummy call to initialize);
 //     });
 //   }
 
-//   Future<void> _updateOrderStatus(int orderId, String newStatus) async {
+//   Future<void> _updateOrderStatus(int statusId, String newStatus) async {
 //     try {
-//       // Perhatikan: Endpoint.status saat ini hardcoded ke orders/5/status
-//       // Kita perlu mengubah API untuk menerima orderId sebagai parameter
-//       final response = await OrdersAPI.updateStatus(
-//         orderId: orderId,
-//         status: newStatus,
-//       );
-
+//       await OrdersAPI.changeStatus(status: newStatus, statusId: statusId);
 //       ScaffoldMessenger.of(context).showSnackBar(
 //         SnackBar(content: Text("Status berhasil diubah menjadi $newStatus")),
 //       );
-
-//       _loadOrders(); // Reload data setelah update
+//       _loadOrders();
 //     } catch (e) {
 //       ScaffoldMessenger.of(context).showSnackBar(
 //         SnackBar(content: Text("Gagal mengubah status: ${e.toString()}")),
@@ -48,58 +45,40 @@
 //   }
 
 //   void _showStatusDialog(int orderId, String currentStatus) {
-//     final statusOptions = ['baru', 'selesai'];
+//     final statusOptions = ['Proses', 'Selesai'];
 
 //     showDialog(
 //       context: context,
 //       builder: (BuildContext context) {
 //         return AlertDialog(
-//           backgroundColor: Color(0xFF03A9F4),
-//           title: Center(
-//             child: Text(
-//               "Ubah Status Pesanan",
-//               style: TextStyle(fontFamily: "OpenSans_SemiBold", fontSize: 20),
-//             ),
-//           ),
-//           content: Container(
+//           title: Text("Ubah Status Order"),
+//           content: SizedBox(
 //             width: double.maxFinite,
-//             child: Column(
-//               mainAxisSize: MainAxisSize.min,
-//               children: statusOptions.map((status) {
+//             child: ListView.builder(
+//               shrinkWrap: true,
+//               itemCount: statusOptions.length,
+//               itemBuilder: (context, index) {
+//                 final status = statusOptions[index];
 //                 return ListTile(
 //                   title: Text(
 //                     status.toUpperCase(),
 //                     style: TextStyle(
-//                       fontFamily: "OpenSans_Regular",
+//                       fontWeight: status == currentStatus
+//                           ? FontWeight.bold
+//                           : FontWeight.normal,
 //                       color: status == currentStatus
 //                           ? Colors.blue
 //                           : Colors.black,
 //                     ),
 //                   ),
-//                   trailing: status == currentStatus
-//                       ? Icon(Icons.check, color: Colors.green)
-//                       : null,
 //                   onTap: () {
 //                     Navigator.pop(context);
-//                     _updateOrderStatus(orderId, status);
+//                     _updateOrderStatus();
 //                   },
 //                 );
-//               }).toList(),
+//               },
 //             ),
 //           ),
-//           actions: [
-//             TextButton(
-//               onPressed: () => Navigator.pop(context),
-//               child: Text(
-//                 "Batal",
-//                 style: TextStyle(
-//                   fontFamily: "Baloo",
-//                   fontSize: 16,
-//                   color: Colors.white,
-//                 ),
-//               ),
-//             ),
-//           ],
 //         );
 //       },
 //     );
@@ -107,10 +86,10 @@
 
 //   Color _getStatusColor(String status) {
 //     switch (status) {
-//       case 'diproses':
-//         return Colors.blue;
-//       case 'selesai':
-//         return Colors.green;
+//       case 'Baru':
+//         return Color(0xFFFFB74D);
+//       case 'Selesai':
+//         return Color(0xFF0D47A1);
 //       default:
 //         return Colors.grey;
 //     }
@@ -142,40 +121,43 @@
 //                     final items = order.items ?? [];
 
 //                     return Card(
-//                       color: Colors.white,
 //                       margin: const EdgeInsets.symmetric(
 //                         horizontal: 12,
 //                         vertical: 6,
 //                       ),
 //                       child: ListTile(
 //                         title: Text(
-//                           order.layanan ?? "Tanpa Layanan",
-//                           style: TextStyle(fontFamily: "OpenSans_SemiBold"),
+//                           "Order #${order.id}",
+//                           style: TextStyle(
+//                             fontFamily: "OpenSans_SemiBold",
+//                             fontSize: 16,
+//                           ),
 //                         ),
 //                         subtitle: Column(
 //                           crossAxisAlignment: CrossAxisAlignment.start,
 //                           children: [
 //                             Text(
-//                               "ID: ${order.id}",
+//                               "Layanan: ${order.layanan ?? 'Tidak ada'}",
 //                               style: TextStyle(fontFamily: "OpenSans_Regular"),
 //                             ),
 //                             Text(
-//                               "Tanggal: ${order.createdAt?.toLocal()}",
+//                               "Tanggal: ${order.createdAt?.toLocal().toString().split(' ')[0]}",
 //                               style: TextStyle(fontFamily: "OpenSans_Regular"),
 //                             ),
-//                             ...items.map(
-//                               (i) => Text(
-//                                 "• ${i.serviceItem?.name} (${i.quantity}x)",
+//                             if (items.isNotEmpty)
+//                               Text(
+//                                 "Items: ${items.map((i) => i.serviceItem?.name).join(', ')}",
 //                                 style: TextStyle(
 //                                   fontFamily: "OpenSans_Regular",
 //                                 ),
+//                                 maxLines: 1,
+//                                 overflow: TextOverflow.ellipsis,
 //                               ),
-//                             ),
 //                             Text(
 //                               "Total: Rp ${order.total?.toStringAsFixed(0) ?? '0'}",
 //                               style: TextStyle(
 //                                 fontFamily: "OpenSans_SemiBold",
-//                                 color: Color(0xFFFFB74D),
+//                                 color: Colors.green,
 //                               ),
 //                             ),
 //                           ],
@@ -185,36 +167,35 @@
 //                           children: [
 //                             Container(
 //                               padding: EdgeInsets.symmetric(
-//                                 horizontal: 8,
+//                                 horizontal: 12,
 //                                 vertical: 4,
 //                               ),
 //                               decoration: BoxDecoration(
-//                                 borderRadius: BorderRadius.circular(10),
-//                                 color: _getStatusColor(
-//                                   order.status ?? 'pending',
-//                                 ),
+//                                 color: _getStatusColor(order.status ?? ''),
+//                                 borderRadius: BorderRadius.circular(12),
 //                               ),
 //                               child: Text(
-//                                 order.status?.toUpperCase() ?? "-",
+//                                 order.status?.toUpperCase() ?? '-',
 //                                 style: TextStyle(
 //                                   color: Colors.white,
-//                                   fontFamily: "Baloo",
 //                                   fontSize: 12,
+//                                   fontFamily: "Baloo",
 //                                 ),
 //                               ),
 //                             ),
 //                             SizedBox(height: 4),
-//                             IconButton(
-//                               icon: Icon(Icons.edit, size: 18),
-//                               onPressed: () {
-//                                 _showStatusDialog(
-//                                   order.id!,
-//                                   order.status ?? 'pending',
-//                                 );
-//                               },
+//                             Text(
+//                               "Tap to change",
+//                               style: TextStyle(
+//                                 fontSize: 10,
+//                                 color: Colors.grey,
+//                               ),
 //                             ),
 //                           ],
 //                         ),
+//                         onTap: () {
+//                           _showStatusDialog(order.id!, order.status ?? 'Baru');
+//                         },
 //                       ),
 //                     );
 //                   },
@@ -225,7 +206,7 @@
 //           Container(
 //             height: 86,
 //             width: double.infinity,
-//             decoration: const BoxDecoration(
+//             decoration: BoxDecoration(
 //               borderRadius: BorderRadius.only(
 //                 bottomLeft: Radius.circular(20),
 //                 bottomRight: Radius.circular(20),
@@ -233,19 +214,16 @@
 //               color: Color(0xFF03A9F4),
 //             ),
 //             child: Padding(
-//               padding: const EdgeInsets.only(top: 10),
-//               child: Row(
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: [
-//                   Text(
-//                     "Lihat Pesanan",
-//                     style: TextStyle(
-//                       fontFamily: "Montserrat_Bold",
-//                       fontSize: 20,
-//                       color: Colors.white,
-//                     ),
+//               padding: const EdgeInsets.only(top: 30),
+//               child: Center(
+//                 child: Text(
+//                   "Kelola Pesanan",
+//                   style: TextStyle(
+//                     fontFamily: "Montserrat_Bold",
+//                     fontSize: 20,
+//                     color: Colors.white,
 //                   ),
-//                 ],
+//                 ),
 //               ),
 //             ),
 //           ),

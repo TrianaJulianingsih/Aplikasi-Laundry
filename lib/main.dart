@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:laundry_jaya/models/get_kategori_model.dart';
 import 'package:laundry_jaya/views/buat_pesanan_screen.dart';
-import 'package:laundry_jaya/views/buttomNav.dart';
+import 'package:laundry_jaya/views/buttom_nav.dart';
 import 'package:laundry_jaya/views/edit_kategori.dart';
 import 'package:laundry_jaya/views/home.dart';
 import 'package:laundry_jaya/views/item_screen.dart';

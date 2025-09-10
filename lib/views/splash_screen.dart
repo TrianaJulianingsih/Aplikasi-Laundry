@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:laundry_jaya/extension/navigtaion.dart';
 import 'package:laundry_jaya/shared_preferences/shared_preferences.dart';
 import 'package:laundry_jaya/utils/app_image.dart';
-import 'package:laundry_jaya/views/buttomNav.dart';
+import 'package:laundry_jaya/views/buttom_nav.dart';
 import 'package:laundry_jaya/views/login_api_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -49,7 +49,11 @@ class _SplashScreenState extends State<SplashScreen> {
             SizedBox(height: 20),
             Text(
               "Laundry Jaya",
-              style: TextStyle(fontFamily: "Montserrat_Bold"),
+              style: TextStyle(
+                fontFamily: "Montserrat_Bold",
+                fontSize: 20,
+                color: Colors.white,
+              ),
             ),
           ],
         ),

@@ -3,7 +3,7 @@ import 'package:laundry_jaya/utils/role_checker.dart';
 import 'package:laundry_jaya/views/home.dart';
 import 'package:laundry_jaya/views/owner_screen.dart';
 import 'package:laundry_jaya/views/profile_screen.dart';
-import 'package:laundry_jaya/views/riwayat_screen.dart'; 
+import 'package:laundry_jaya/views/riwayat_screen.dart';
 
 class ButtomNav extends StatefulWidget {
   const ButtomNav({super.key});
@@ -25,11 +25,15 @@ class _ButtomNavState extends State<ButtomNav> {
 
   void _initializeScreens() async {
     final isOwner = await RoleChecker.isOwner();
-    
+
     setState(() {
-      _widgetOptions = isOwner 
-          ? <Widget>[OwnerDashboard(), RiwayatPesananScreen(), ProfileAPIScreen()]
-          : <Widget>[HomeScreen(), RiwayatPesananScreen(), ProfileAPIScreen()]; 
+      _widgetOptions = isOwner
+          ? <Widget>[
+              OwnerDashboard(),
+              RiwayatPesananScreen(),
+              ProfileAPIScreen(),
+            ]
+          : <Widget>[HomeScreen(), RiwayatPesananScreen(), ProfileAPIScreen()];
     });
   }
 
@@ -42,9 +46,7 @@ class _ButtomNavState extends State<ButtomNav> {
   @override
   Widget build(BuildContext context) {
     if (_widgetOptions.isEmpty) {
-      return Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
@@ -60,7 +62,7 @@ class _ButtomNavState extends State<ButtomNav> {
               width: 30,
               height: 30,
             ),
-            label: 'Home'
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
@@ -73,20 +75,16 @@ class _ButtomNavState extends State<ButtomNav> {
               width: 30,
               height: 30,
             ),
-            label: 'Pesanan'
+            label: 'Pesanan',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset(
-              "assets/images/user.png",
-              width: 30,
-              height: 30,
-            ),
+            icon: Image.asset("assets/images/user.png", width: 30, height: 30),
             activeIcon: Image.asset(
               "assets/images/user (1).png",
               width: 30,
               height: 30,
             ),
-            label: 'Profil', 
+            label: 'Profil',
           ),
         ],
       ),

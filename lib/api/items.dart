@@ -23,7 +23,7 @@ class ItemsAPI {
         "name": name,
         "price": price.toString(),
         "category_id": categoryId.toString(),
-        "service_type_id": serviceTypeId.toString(), 
+        "service_type_id": serviceTypeId.toString(),
       },
     );
 
@@ -37,7 +37,7 @@ class ItemsAPI {
       throw Exception(error["message"] ?? "Gagal menambahkan item");
     }
   }
-  
+
   static Future<ItemModel> getItemByCategory(int categoryId) async {
     final url = Uri.parse("${Endpoint.items}?category_id=$categoryId");
     final token = await PreferenceHandler.getToken();

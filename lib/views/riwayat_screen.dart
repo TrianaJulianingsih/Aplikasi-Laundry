@@ -1,3 +1,4 @@
+// File: views/riwayat_screen.dart
 import 'package:flutter/material.dart';
 import 'package:laundry_jaya/api/orders.dart';
 import 'package:laundry_jaya/models/get_order_model.dart';
@@ -16,7 +17,28 @@ class _RiwayatPesananScreenState extends State<RiwayatPesananScreen> {
   @override
   void initState() {
     super.initState();
-    _orderFuture = OrdersAPI.getOrders();
+    _loadOrders();
+  }
+
+  void _loadOrders() {
+    setState(() {
+      _orderFuture = OrdersAPI.getOrders();
+    });
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'pending':
+        return Colors.orange;
+      case 'diproses':
+        return Colors.blue;
+      case 'selesai':
+        return Colors.green;
+      case 'diambil':
+        return Colors.purple;
+      default:
+        return Colors.grey;
+    }
   }
 
   @override
@@ -26,87 +48,93 @@ class _RiwayatPesananScreenState extends State<RiwayatPesananScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 70),
-            child: FutureBuilder<GetOrderModel>(
-              future: _orderFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text("Error: ${snapshot.error}"));
-                } else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
-                  return const Center(child: Text("Belum ada pesanan"));
-                }
+            child: RefreshIndicator(
+              onRefresh: () async {
+                _loadOrders();
+                await _orderFuture;
+              },
+              child: FutureBuilder<GetOrderModel>(
+                future: _orderFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text("Error: ${snapshot.error}"));
+                  } else if (!snapshot.hasData ||
+                      snapshot.data!.data!.isEmpty) {
+                    return const Center(child: Text("Belum ada pesanan"));
+                  }
 
-                final orders = snapshot.data!.data!;
-                return ListView.builder(
-                  itemCount: orders.length,
-                  itemBuilder: (context, index) {
-                    final order = orders[index];
-                    final items = order.items ?? [];
-                    return Card(
-                      color: Colors.white,
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      child: ListTile(
-                        title: Text(
-                          order.layanan ?? "Tanpa Layanan",
-                          style: TextStyle(fontFamily: "OpenSans_SemiBold"),
+                  final orders = snapshot.data!.data!;
+                  return ListView.builder(
+                    itemCount: orders.length,
+                    itemBuilder: (context, index) {
+                      final order = orders[index];
+                      final items = order.items ?? [];
+                      return Card(
+                        color: Colors.white,
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
                         ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Tanggal: ${order.createdAt?.toLocal()}",
-                              style: TextStyle(fontFamily: "OpenSans_Regular"),
-                            ),
-                            ...items.map(
-                              (i) => Text(
-                                "• ${i.serviceItem?.name}",
+                        child: ListTile(
+                          title: Text(
+                            order.layanan ?? "Tanpa Layanan",
+                            style: TextStyle(fontFamily: "OpenSans_SemiBold"),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Tanggal: ${order.createdAt?.toLocal()}",
                                 style: TextStyle(
                                   fontFamily: "OpenSans_Regular",
                                 ),
                               ),
-                            ),
-                            Text(
-                              "Harga: ${order.total}",
-                              style: TextStyle(
-                                fontFamily: "OpenSans_SemiBold",
-                                color: Color(0xFFFFB74D),
+                              ...items.map(
+                                (i) => Text(
+                                  "• ${i.serviceItem?.name}",
+                                  style: TextStyle(
+                                    fontFamily: "OpenSans_Regular",
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        trailing: Container(
-                          height: 20,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: order.status == "selesai"
-                                ? Color(0xFF0D47A1)
-                                : Color(0xFFFFB74D),
+                              Text(
+                                "Harga: ${order.total}",
+                                style: TextStyle(
+                                  fontFamily: "OpenSans_SemiBold",
+                                  color: Color(0xFFFFB74D),
+                                ),
+                              ),
+                            ],
                           ),
-                          child: Center(
+                          trailing: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: _getStatusColor(order.status ?? ''),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                             child: Text(
-                              order.status ?? "-",
+                              order.status?.toUpperCase() ?? '-',
                               style: TextStyle(
-                                color: order.status == "selesai"
-                                    ? Colors.white
-                                    : Colors.white,
+                                color: Colors.white,
+                                fontSize: 12,
                                 fontFamily: "Baloo",
                               ),
                             ),
                           ),
+                          onTap: () {
+                            // context.pushNamed(DetailOrderScreen.id);
+                          },
                         ),
-                        onTap: () {
-                          // context.pushNamed(DetailOrderScreen.id);
-                        },
-                      ),
-                    );
-                  },
-                );
-              },
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ),
           Container(

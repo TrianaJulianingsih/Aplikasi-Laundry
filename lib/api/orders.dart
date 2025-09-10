@@ -60,33 +60,34 @@ class OrdersAPI {
     }
   }
 
-  static Future<ChangeStatusModel> updateStatus({
-    required int orderId,
+  static Future<ChangeStatusModel> changeStatus({
+    required int statusId,
     required String status,
   }) async {
-    final url = Uri.parse("${Endpoint.order}/$orderId/status");
-    final token = await PreferenceHandler.getToken();
-
-    print("Update Profile URL: $url");
-    print("Update Profile Data: {status: $status}");
-
-    final response = await http.post(
-      url,
-      body: {"status": status},
-      headers: {"Accept": "application/json", "Authorization": "Bearer $token"},
-    );
-
-    print("Update Profile Response: ${response.statusCode}");
-    print("Update Profile Body: ${response.body}");
-
-    if (response.statusCode == 200) {
-      return ChangeStatusModel.fromJson(json.decode(response.body));
-    } else {
-      final error = json.decode(response.body);
-      throw Exception(
-        error["message"] ??
-            "Update profile gagal. Status: ${response.statusCode}",
+    try {
+      final token = await PreferenceHandler.getToken();
+      final url = Uri.parse(Endpoint.status(statusId));
+      final body = {"status": status};
+      final response = await http.post(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Authorization": "Bearer $token",
+        },
+        body: jsonEncode(body),
       );
+
+      if (response.statusCode == 200) {
+        return ChangeStatusModel.fromJson(json.decode(response.body));
+      } else {
+        final error = json.decode(response.body);
+        throw Exception(
+          error["message"] ?? "Gagal konversi booking ke service",
+        );
+      }
+    } catch (e) {
+      throw Exception("Connection error: $e");
     }
   }
 }

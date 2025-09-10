@@ -4,7 +4,7 @@ import 'package:laundry_jaya/api/register_user.dart';
 import 'package:laundry_jaya/extension/navigtaion.dart';
 import 'package:laundry_jaya/models/register_model.dart';
 import 'package:laundry_jaya/shared_preferences/shared_preferences.dart';
-import 'package:laundry_jaya/views/buttomNav.dart';
+import 'package:laundry_jaya/views/buttom_nav.dart';
 import 'package:laundry_jaya/views/post_api_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -274,12 +274,7 @@ class _MyWidgetState extends State<LoginScreen> {
                     child: ElevatedButton(
                       onPressed: isLoading ? null : loginUser,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(
-                          255,
-                          111,
-                          30,
-                          192,
-                        ),
+                        backgroundColor: Color(0xFF03A9F4),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -290,8 +285,7 @@ class _MyWidgetState extends State<LoginScreen> {
                               "Masuk",
                               style: TextStyle(
                                 color: Colors.white,
-                                fontFamily: "Montserrat",
-                                fontWeight: FontWeight.w600,
+                                fontFamily: "Montserrat_SemiBold",
                               ),
                             ),
                     ),
