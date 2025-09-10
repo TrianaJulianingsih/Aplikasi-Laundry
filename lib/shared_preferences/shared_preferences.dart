@@ -79,8 +79,4 @@ class PreferenceHandler {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool(loginKey);
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 08f69dd9376124655d1b4a0b5c7f7b35d6549737
