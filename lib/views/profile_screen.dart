@@ -3,7 +3,6 @@ import 'package:laundry_jaya/api/register_user.dart';
 import 'package:laundry_jaya/extension/navigtaion.dart';
 import 'package:laundry_jaya/models/get_user_model.dart';
 import 'package:laundry_jaya/shared_preferences/shared_preferences.dart';
-import 'package:laundry_jaya/utils/role_checker.dart';
 import 'package:laundry_jaya/views/login_api_screen.dart';
 
 class ProfileAPIScreen extends StatefulWidget {
@@ -21,7 +20,6 @@ class _ProfileAPIScreenState extends State<ProfileAPIScreen> {
   String? errorMessage;
   bool isLoading = false;
   bool isUpdating = false;
-  String userRole = "";
   String userName = "";
   String userEmail = "";
 
@@ -35,12 +33,11 @@ class _ProfileAPIScreenState extends State<ProfileAPIScreen> {
     setState(() => isLoading = true);
 
     try {
-      final role = await RoleChecker.getRoleDisplayName();
+      // final role = await RoleChecker.getRoleDisplayName();
       final name = await PreferenceHandler.getUserName();
       final email = await PreferenceHandler.getUserEmail();
 
       setState(() {
-        userRole = role;
         userName = name ?? "";
       });
       nameController.text = name ?? "";
@@ -274,21 +271,6 @@ class _ProfileAPIScreenState extends State<ProfileAPIScreen> {
                                 ),
                                 subtitle: Text(
                                   user?.data?.email ?? userEmail,
-                                  style: TextStyle(
-                                    fontFamily: "OpenSans_Regular",
-                                  ),
-                                ),
-                              ),
-                              ListTile(
-                                leading: Icon(Icons.people, color: Colors.blue),
-                                title: Text(
-                                  "Role",
-                                  style: TextStyle(
-                                    fontFamily: "OpenSans_Medium",
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  userRole,
                                   style: TextStyle(
                                     fontFamily: "OpenSans_Regular",
                                   ),

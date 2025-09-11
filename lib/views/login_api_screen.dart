@@ -23,112 +23,77 @@ class _MyWidgetState extends State<LoginScreen> {
   String? errorMessage;
   bool isVisibility = false;
   bool isLoading = false;
-
   void loginUser() async {
     setState(() {
       isLoading = true;
       errorMessage = null;
     });
-
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
-
     if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Email dan Password harus diisi")),
+        const SnackBar(content: Text("Email, dan Password tidak boleh kosong")),
       );
-      setState(() => isLoading = false);
+      isLoading = false;
+
       return;
     }
-
     try {
       final result = await AuthenticationAPI.loginUser(
         email: email,
         password: password,
       );
-      final savedRole = await PreferenceHandler.getUserRole();
-      final savedEmail = await PreferenceHandler.getUserEmail();
-
-      String userRole = "";
-
-      if (savedEmail == email && savedRole != null) {
-        userRole = savedRole;
-      } else {
-        userRole = "customer";
-        PreferenceHandler.saveUserRole(userRole);
-        PreferenceHandler.saveUserEmail(email);
-      }
-      PreferenceHandler.saveToken(result.data?.token ?? "");
-      PreferenceHandler.saveUserRole(userRole);
-      PreferenceHandler.saveUserEmail(email);
-
-      PreferenceHandler.saveUserId(result.data?.user?.id ?? 0);
-      PreferenceHandler.saveUserName(result.data?.user?.name ?? "");
-
       setState(() {
         user = result;
       });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            "Login berhasil sebagai ${userRole == 'owner' ? 'Pemilik' : 'Pelanggan'}",
-          ),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Login berhasil")));
+      PreferenceHandler.saveToken(user?.data?.token.toString() ?? "");
       context.pushReplacementNamed(ButtomNav.id);
+      print(user?.toJson());
     } catch (e) {
-      print("Login error: $e");
+      print(e);
       setState(() {
         errorMessage = e.toString();
       });
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Login gagal: ${e.toString()}")));
+      ).showSnackBar(SnackBar(content: Text(errorMessage.toString())));
     } finally {
-      setState(() => isLoading = false);
+      setState(() {});
+      isLoading = false;
     }
+    // final user = User(email: email, password: password, name: name);
+    // await DbHelper.registerUser(user);
+    // Future.delayed(const Duration(seconds: 1)).then((value) {
+    //   isLoading = false;
+    //   ScaffoldMessenger.of(
+    //     context,
+    //   ).showSnackBar(const SnackBar(content: Text("Pendaftaran berhasil")));
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: AppBar(
+
+      // ),
       body: Form(
         key: _formKey,
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            Stack(
-              children: [
-                Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  decoration: BoxDecoration(color: Color(0xFF03A9F4)),
+            Container(
+              height: double.infinity,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage("assets/images/background.jpg"),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, left: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 30,
-                        backgroundImage: AssetImage("assets/images/logo.png"),
-                      ),
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 30,
-                        backgroundImage: AssetImage("assets/images/logo.png"),
-                      ),
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 30,
-                        backgroundImage: AssetImage("assets/images/logo.png"),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
             Container(
               padding: EdgeInsets.only(top: 68),
@@ -145,7 +110,9 @@ class _MyWidgetState extends State<LoginScreen> {
             Padding(
               padding: EdgeInsets.only(top: 92),
               child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // SizedBox(height: 42),
                   Padding(
                     padding: const EdgeInsets.only(right: 50),
                     child: Text(
@@ -158,11 +125,10 @@ class _MyWidgetState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(height: 12),
-
                   Padding(
-                    padding: const EdgeInsets.only(right: 140),
+                    padding: const EdgeInsets.only(right: 20, left: 35),
                     child: Text(
-                      "Cucian selesai, kamu santai.",
+                      "Selamat datang kembali di Laundry Jaya. Have a good time",
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -187,14 +153,16 @@ class _MyWidgetState extends State<LoginScreen> {
                         TextFormField(
                           controller: emailController,
                           decoration: InputDecoration(
-                            hintText: "Email/id Anda",
-                            hintStyle: TextStyle(
-                              color: const Color.fromARGB(223, 85, 85, 88),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                              fontFamily: "Gilroy_Regular",
+                            hint: Text(
+                              "Email/id Anda",
+                              style: TextStyle(
+                                color: const Color.fromARGB(223, 85, 85, 88),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                fontFamily: "Gilroy_Regular",
+                              ),
                             ),
-                            contentPadding: EdgeInsets.only(top: 8, left: 16),
+                            contentPadding: EdgeInsets.only(top: 8),
                             prefixIcon: Transform.translate(
                               offset: Offset(0, -2),
                               child: Image.asset(
@@ -205,6 +173,16 @@ class _MyWidgetState extends State<LoginScreen> {
                             ),
                             border: InputBorder.none,
                           ),
+                          // validator: (value) {
+                          //   if (value == null || value.isEmpty) {
+                          //     return "Email tidak boleh kosong";
+                          //   } else if (!value.contains("@")) {
+                          //     return "Email tidak valid";
+                          //   } else if (RegExp(r'^\d').hasMatch(value)) {
+                          //     return "Email tidak valid";
+                          //   }
+                          //   return null;
+                          // },
                         ),
                         Divider(
                           indent: 15,
@@ -213,9 +191,8 @@ class _MyWidgetState extends State<LoginScreen> {
                         ),
                         TextFormField(
                           controller: passwordController,
-                          obscureText: !isVisibility,
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(top: 10, left: 16),
+                            contentPadding: EdgeInsets.only(top: 10),
                             prefixIcon: Transform.translate(
                               offset: Offset(0, -1),
                               child: Image.asset(
@@ -225,82 +202,136 @@ class _MyWidgetState extends State<LoginScreen> {
                               ),
                             ),
                             border: InputBorder.none,
-                            hintText: "Kata Sandi Anda",
-                            hintStyle: TextStyle(
-                              color: const Color.fromARGB(195, 61, 61, 62),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                              fontFamily: "Gilroy_Regular",
-                            ),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                isVisibility
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                                size: 20,
+                            hint: Text(
+                              "Kata Sandi Anda",
+                              style: TextStyle(
+                                color: const Color.fromARGB(195, 61, 61, 62),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                fontFamily: "Gilroy_Regular",
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  isVisibility = !isVisibility;
-                                });
-                              },
                             ),
                           ),
+                          // validator: (value) {
+                          //   if (value == null || value.isEmpty) {
+                          //     return "Password tidak boleh kosong";
+                          //   } else if (RegExp(r'^\d').hasMatch(value)) {
+                          //     return "Password tidak valid";
+                          //   }
+                          //   return null;
+                          // },
                         ),
                       ],
                     ),
                   ),
                   SizedBox(height: 18),
-
                   Padding(
                     padding: const EdgeInsets.only(right: 210),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Lupa Password ?",
-                        style: TextStyle(
-                          color: const Color.fromARGB(148, 62, 62, 70),
-                          fontSize: 12,
-                          fontFamily: "Poppins_Regular",
-                        ),
+                    child: Text(
+                      "Lupa Password ?",
+                      style: TextStyle(
+                        color: const Color.fromARGB(148, 62, 62, 70),
+                        fontSize: 12,
+                        fontFamily: "Poppins_Regular",
                       ),
                     ),
                   ),
                   SizedBox(height: 45),
-
                   SizedBox(
                     height: 56,
                     width: 327,
                     child: ElevatedButton(
-                      onPressed: isLoading ? null : loginUser,
+                      onPressed: () {
+                        loginUser();
+                        //Error dan sukses menggunakan ScaffoldMessenger dan formKey
+                        // if (_formKey.currentState!.validate()) {
+                        //   // ScaffoldMessenger.of(context).showSnackBar(
+                        //   //   SnackBar(content: Text("Form Validasi Berhasil")),
+                        //   // );
+                        //   context.pushReplacement(TugasDelapan());
+                        //   ScaffoldMessenger.of(context).showSnackBar(
+                        //     SnackBar(
+                        //       content: Text("Form Validasi Berhasil"),
+                        //       duration: Duration(microseconds: 2),
+                        //     ),
+                        //   );
+                        // } else {
+                        //   showDialog(
+                        //     context: context,
+                        //     builder: (BuildContext context) {
+                        //       return AlertDialog(
+                        //         title: Text("Login failed"),
+                        //         content: Column(
+                        //           mainAxisSize: MainAxisSize.min,
+                        //           children: [
+                        //             Text("Email or password is invalid"),
+                        //             SizedBox(height: 20),
+                        //             // Image.asset(
+                        //             //   'assets/images/rendang.jpeg',
+                        //             //   width: 90,
+                        //             //   height: 100,
+                        //             //   fit: BoxFit.cover,
+                        //             // ),
+                        //             Lottie.asset(
+                        //               'assets/animations/false.json',
+                        //               width: 100,
+                        //               height: 100,
+                        //               fit: BoxFit.cover,
+                        //             ),
+                        //           ],
+                        //         ),
+                        //         actions: [
+                        //           TextButton(
+                        //             child: Text("Batal"),
+                        //             onPressed: () {
+                        //               Navigator.of(context).pop();
+                        //             },
+                        //           ),
+                        //           TextButton(
+                        //             child: Text("Ok"),
+                        //             onPressed: () {
+                        //               Navigator.of(context).pop();
+                        //             },
+                        //           ),
+                        //         ],
+                        //       );
+                        //     },
+                        //   );
+                        // }
+                      },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF03A9F4),
+                        backgroundColor: const Color.fromARGB(
+                          255,
+                          111,
+                          30,
+                          192,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: isLoading
-                          ? CircularProgressIndicator(color: Colors.white)
-                          : Text(
-                              "Masuk",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "Montserrat_SemiBold",
-                              ),
-                            ),
+                      child: Text(
+                        "Masuk",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: "Montserrat",
+                          // fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(height: 10),
-
                   Padding(
                     padding: const EdgeInsets.all(25),
                     child: Row(
+                      // crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
-                          child: Container(
-                            margin: EdgeInsets.only(right: 8),
-                            height: 1,
-                            color: Colors.grey,
+                          child: Padding(
+                            padding: EdgeInsets.all(9),
+                            child: Image.asset(
+                              "assets/images/iconPembatas.png",
+                            ),
                           ),
                         ),
                         Text(
@@ -313,16 +344,16 @@ class _MyWidgetState extends State<LoginScreen> {
                           ),
                         ),
                         Expanded(
-                          child: Container(
-                            margin: EdgeInsets.only(left: 8),
-                            height: 1,
-                            color: Colors.grey,
+                          child: Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Image.asset(
+                              "assets/images/iconPembatas.png",
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-
                   SizedBox(height: 2),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -331,52 +362,68 @@ class _MyWidgetState extends State<LoginScreen> {
                       right: 35,
                     ),
                     child: Row(
+                      // crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
                           child: Container(
                             height: 48,
+                            width: 48,
+                            alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
+                              border: Border.all(
+                                color: const Color.fromARGB(59, 190, 190, 195),
+                                width: 2,
+                              ),
                               borderRadius: BorderRadius.circular(8),
+                              image: DecorationImage(
+                                image: AssetImage("assets/images/google.png"),
+                              ),
                             ),
-                            child: IconButton(
-                              icon: Image.asset("assets/images/google.png"),
-                              onPressed: () {},
-                            ),
+                            // child: Text("Postingan"),
                           ),
                         ),
                         SizedBox(width: 30),
                         Expanded(
                           child: Container(
                             height: 48,
+                            width: 48,
+                            alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
+                              border: Border.all(
+                                color: const Color.fromARGB(59, 190, 190, 195),
+                                width: 2,
+                              ),
                               borderRadius: BorderRadius.circular(8),
+                              image: DecorationImage(
+                                image: AssetImage(
+                                  "assets/images/cib_apple.png",
+                                ),
+                              ),
                             ),
-                            child: IconButton(
-                              icon: Image.asset("assets/images/cib_apple.png"),
-                              onPressed: () {},
-                            ),
+                            // child: Text("Follower"),
                           ),
                         ),
                         SizedBox(width: 30),
                         Expanded(
                           child: Container(
                             height: 48,
+                            width: 48,
+                            alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
+                              border: Border.all(
+                                color: const Color.fromARGB(59, 190, 190, 195),
+                                width: 2,
+                              ),
                               borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: IconButton(
-                              icon: Image.asset("assets/images/twitter.png"),
-                              onPressed: () {},
+                              image: DecorationImage(
+                                image: AssetImage("assets/images/twitter.png"),
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-
                   SizedBox(height: 140),
                   Center(
                     child: Text.rich(

@@ -28,14 +28,10 @@ class _RiwayatPesananScreenState extends State<RiwayatPesananScreen> {
 
   Color _getStatusColor(String status) {
     switch (status) {
-      case 'pending':
-        return Colors.orange;
-      case 'diproses':
+      case 'Baru':
         return Colors.blue;
-      case 'selesai':
+      case 'Selesai':
         return Colors.green;
-      case 'diambil':
-        return Colors.purple;
       default:
         return Colors.grey;
     }
@@ -126,9 +122,6 @@ class _RiwayatPesananScreenState extends State<RiwayatPesananScreen> {
                               ),
                             ),
                           ),
-                          onTap: () {
-                            // context.pushNamed(DetailOrderScreen.id);
-                          },
                         ),
                       );
                     },
@@ -148,7 +141,7 @@ class _RiwayatPesananScreenState extends State<RiwayatPesananScreen> {
               color: Color(0xFF03A9F4),
             ),
             child: Padding(
-              padding: const EdgeInsets.only(top: 10),
+              padding: EdgeInsets.only(top: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

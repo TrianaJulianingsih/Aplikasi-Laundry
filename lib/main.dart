@@ -5,6 +5,7 @@ import 'package:laundry_jaya/views/buttom_nav.dart';
 import 'package:laundry_jaya/views/edit_kategori.dart';
 import 'package:laundry_jaya/views/home.dart';
 import 'package:laundry_jaya/views/item_screen.dart';
+import 'package:laundry_jaya/views/lihat_pesanan_screen.dart';
 import 'package:laundry_jaya/views/login_api_screen.dart';
 import 'package:laundry_jaya/views/owner_screen.dart';
 import 'package:laundry_jaya/views/profile_screen.dart';
@@ -50,10 +51,10 @@ class MyApp extends StatelessWidget {
         HomeScreen.id: (context) => HomeScreen(),
         ButtomNav.id: (context) => ButtomNav(),
         TambahKategoriScreen.id: (context) => TambahKategoriScreen(),
-        TambahItemScreen.id: (context) => TambahItemScreen(),
+        TambahItemScreen.id: (context) => const TambahItemScreen(),
         OwnerDashboard.id: (context) => OwnerDashboard(),
         RiwayatPesananScreen.id: (context) => RiwayatPesananScreen(),
-        // LihatPesananScreen.id: (context) => LihatPesananScreen(),
+        LihatPesananScreen.id: (context) => LihatPesananScreen(),
         ItemScreen.id: (context) {
           final args =
               ModalRoute.of(context)!.settings.arguments

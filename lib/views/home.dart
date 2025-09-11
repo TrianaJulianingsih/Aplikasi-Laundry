@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:laundry_jaya/api/kategori.dart';
-import 'package:laundry_jaya/extension/navigtaion.dart';
 import 'package:laundry_jaya/models/get_kategori_model.dart';
 import 'package:laundry_jaya/shared_preferences/shared_preferences.dart';
 import 'package:laundry_jaya/views/item_screen.dart';
-import 'package:laundry_jaya/views/tambah_item_screen.dart';
-import 'package:laundry_jaya/views/tambah_kategori_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,15 +32,15 @@ class _TugasTujuhState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String?>(
-      future: PreferenceHandler.getUserRole(),
+    return FutureBuilder<GetKategoriModel>(
+      future: _kategoriFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         }
 
-        final userRole = snapshot.data ?? "customer";
-        final isOwner = userRole == "owner";
+        // final userRole = snapshot.data ?? "customer";
+        // final isOwner = userRole == "owner";
 
         return Scaffold(
           body: SingleChildScrollView(
@@ -70,45 +67,40 @@ class _TugasTujuhState extends State<HomeScreen> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(left: 25),
-                                  child: Text(
-                                    isOwner ? "Pemilik Laundry" : "Pelanggan",
-                                    style: TextStyle(
-                                      fontFamily: "Montserrat_Regular",
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                    ),
-                                  ),
                                 ),
                                 SizedBox(width: 200),
-                                if (isOwner)
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 8),
-                                    child: Row(
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {
-                                            context.pushNamed(TambahKategoriScreen.id);
-                                          },
-                                          icon: Icon(
-                                            Icons.add,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            Navigator.pushNamed(
-                                              context,
-                                              TambahItemScreen.id,
-                                            );
-                                          },
-                                          icon: const Icon(
-                                            Icons.add,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                // if (isOwner)
+                                //   Padding(
+                                //     padding: const EdgeInsets.only(right: 8),
+                                //     child: Row(
+                                //       children: [
+                                //         IconButton(
+                                //           onPressed: () {
+                                //             Navigator.pushNamed(
+                                //               context,
+                                //               TambahItemScreen.id,
+                                //             );
+                                //           },
+                                //           icon: Icon(
+                                //             Icons.add,
+                                //             color: Colors.white,
+                                //           ),
+                                //         ),
+                                //         IconButton(
+                                //           onPressed: () {
+                                //             Navigator.pushNamed(
+                                //               context,
+                                //               TambahItemScreen.id,
+                                //             );
+                                //           },
+                                //           icon: const Icon(
+                                //             Icons.add,
+                                //             color: Colors.white,
+                                //           ),
+                                //         ),
+                                //       ],
+                                //     ),
+                                //   ),
                               ],
                             ),
                           ),
@@ -266,7 +258,7 @@ class _TugasTujuhState extends State<HomeScreen> {
                                 SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 3,
                                 ),
-                            itemCount: kategoriList.length + (isOwner ? 2 : 0),
+                            itemCount: kategoriList.length,
                             itemBuilder: (context, index) {
                               final kategori = kategoriList[index];
                               return Column(
@@ -336,7 +328,7 @@ class _TugasTujuhState extends State<HomeScreen> {
                       //       fontSize: 16,
                       //     ),
                       //   ),
-                        
+
                       // ],
                     ],
                   ),

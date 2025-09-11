@@ -6,7 +6,6 @@ import 'package:laundry_jaya/shared_preferences/shared_preferences.dart';
 class PostApiScreen extends StatefulWidget {
   const PostApiScreen({super.key});
   static const id = '/post_api_screen';
-
   @override
   State<PostApiScreen> createState() => _PostApiScreenState();
 }
@@ -15,12 +14,10 @@ class _PostApiScreenState extends State<PostApiScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  String selectedRole = "customer";
   GetProfile? user;
   String? errorMessage;
   bool isVisibility = false;
   bool isLoading = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: Stack(children: [buildBackground(), buildLayer()]));
@@ -31,59 +28,53 @@ class _PostApiScreenState extends State<PostApiScreen> {
       isLoading = true;
       errorMessage = null;
     });
-
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
     final name = nameController.text.trim();
-
     if (email.isEmpty || password.isEmpty || name.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Semua field harus diisi")));
-      setState(() => isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Email, Password, dan Nama tidak boleh kosong"),
+        ),
+      );
+      isLoading = false;
+
       return;
     }
-
     try {
       final result = await AuthenticationAPI.registerUser(
         email: email,
         password: password,
         name: name,
       );
-
-      // Save role locally
-      PreferenceHandler.saveUserRole(selectedRole);
-      PreferenceHandler.saveUserEmail(email);
-      PreferenceHandler.saveUserName(name);
-
       setState(() {
         user = result;
       });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            "Registrasi berhasil sebagai ${selectedRole == 'owner' ? 'Pemilik' : 'Pelanggan'}",
-          ),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Pendaftaran berhasil")));
       PreferenceHandler.saveToken(user?.data?.token.toString() ?? "");
-      if (selectedRole == "owner") {
-        Navigator.pushReplacementNamed(context, "/buttomNav");
-      } else {
-        Navigator.pushReplacementNamed(context, "/buttomNav");
-      }
+      print(user?.toJson());
     } catch (e) {
-      print("Register error: $e");
+      print(e);
       setState(() {
         errorMessage = e.toString();
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Registrasi gagal: ${e.toString()}")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(errorMessage.toString())));
     } finally {
-      setState(() => isLoading = false);
+      setState(() {});
+      isLoading = false;
     }
+    // final user = User(email: email, password: password, name: name);
+    // await DbHelper.registerUser(user);
+    // Future.delayed(const Duration(seconds: 1)).then((value) {
+    //   isLoading = false;
+    //   ScaffoldMessenger.of(
+    //     context,
+    //   ).showSnackBar(const SnackBar(content: Text("Pendaftaran berhasil")));
+    // });
   }
 
   SafeArea buildLayer() {
@@ -93,105 +84,81 @@ class _PostApiScreenState extends State<PostApiScreen> {
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Daftar Akun Baru",
-                style: TextStyle(
-                  fontSize: 25,
-                  fontFamily: "Montserrat_Bold",
-                  color: Colors.white,
-                ),
+                "Register API",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               height(24),
-              buildTitle("Pilih Jenis Akun"),
-              height(12),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(32),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    value: selectedRole,
-                    isExpanded: true,
-                    items: [
-                      DropdownMenuItem(
-                        value: "customer",
-                        child: Text(
-                          "Pelanggan",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "owner",
-                        child: Text(
-                          "Pemilik Laundry",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                    onChanged: (value) {
-                      setState(() {
-                        selectedRole = value!;
-                      });
-                    },
-                  ),
-                ),
-              ),
-              height(16),
-
-              buildTitle("Nama Lengkap"),
+              buildTitle("Email Address"),
               height(12),
               buildTextField(
-                hintText: "Masukkan nama lengkap",
+                hintText: "Enter your email",
+                controller: emailController,
+              ),
+              height(16),
+              buildTitle("Name"),
+              height(12),
+              buildTextField(
+                hintText: "Enter your name",
                 controller: nameController,
               ),
               height(16),
-
-              buildTitle("Email"),
-              height(12),
-              buildTextField(
-                hintText: "Masukkan email",
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-              ),
-              height(16),
-
               buildTitle("Password"),
               height(12),
               buildTextField(
-                hintText: "Masukkan password",
+                hintText: "Enter your password",
                 isPassword: true,
                 controller: passwordController,
               ),
+              height(12),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => MeetSebelas()),
+                    // );
+                  },
+                  child: Text(
+                    "Forgot Password?",
+                    style: TextStyle(
+                      fontSize: 12,
+                      // color: AppColor.orange,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
               height(24),
-
               SizedBox(
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: isLoading ? null : registerUser,
+                  onPressed: () {
+                    registerUser();
+                  },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF0D47A1),
+                    backgroundColor: Colors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
                   ),
                   child: isLoading
-                      ? CircularProgressIndicator(color: Colors.white)
+                      ? CircularProgressIndicator()
                       : Text(
-                          "Daftar sebagai ${selectedRole == 'owner' ? 'Pemilik' : 'Pelanggan'}",
+                          "Daftar",
                           style: TextStyle(
                             fontSize: 16,
-                            fontFamily: "Baloo",
+                            fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
                 ),
               ),
               height(16),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -203,24 +170,21 @@ class _PostApiScreenState extends State<PostApiScreen> {
                     ),
                   ),
                   Text(
-                    "Atau Masuk Dengan",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.white,
-                      fontFamily: "OpenSans_Regular",
-                    ),
+                    "Or Sign In With",
+                    // style: TextStyle(fontSize: 12, color: AppColor.gray88),
                   ),
                   Expanded(
                     child: Container(
                       margin: EdgeInsets.only(left: 8),
+
                       height: 1,
                       color: Colors.white,
                     ),
                   ),
                 ],
               ),
-              height(16),
 
+              height(16),
               SizedBox(
                 height: 48,
                 child: ElevatedButton(
@@ -232,11 +196,7 @@ class _PostApiScreenState extends State<PostApiScreen> {
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.login, color: Color(0xFF0D47A1)),
-                      width(8),
-                      Text("Login", style: TextStyle(color: Color(0xFF0D47A1))),
-                    ],
+                    children: [width(4), Text("Login")],
                   ),
                 ),
               ),
@@ -251,23 +211,25 @@ class _PostApiScreenState extends State<PostApiScreen> {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      decoration: const BoxDecoration(color: Color(0xFF03A9F4)),
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/background.png"),
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 
   TextField buildTextField({
     String? hintText,
     bool isPassword = false,
-    TextInputType? keyboardType,
     TextEditingController? controller,
   }) {
     return TextField(
       controller: controller,
-      obscureText: isPassword ? !isVisibility : false,
-      keyboardType: keyboardType,
+      obscureText: isPassword ? isVisibility : false,
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: TextStyle(fontFamily: "OpenSans_Regular"),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
           borderSide: BorderSide(
@@ -295,7 +257,7 @@ class _PostApiScreenState extends State<PostApiScreen> {
                 },
                 icon: Icon(
                   isVisibility ? Icons.visibility_off : Icons.visibility,
-                  color: Colors.grey,
+                  // color: AppColor.gray88,
                 ),
               )
             : null,
@@ -307,16 +269,10 @@ class _PostApiScreenState extends State<PostApiScreen> {
   SizedBox width(double width) => SizedBox(width: width);
 
   Widget buildTitle(String text) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: 14,
-          fontFamily: "OpenSans_SemiBold",
-          color: Colors.white,
-        ),
-      ),
+    return Row(
+      children: [
+        // Text(text, style: TextStyle(fontSize: 12, color: AppColor.gray88)),
+      ],
     );
   }
 }

@@ -121,22 +121,39 @@ class KategoriAPI {
     }
   }
 
-  static Future<DeleteModel> hapusKategori({
-    required String name,
-    required int id,
-  }) async {
+  // static Future<DeleteModel> hapusKategori({
+  //   required String name,
+  //   required int id,
+  // }) async {
+  //   final url = Uri.parse("${Endpoint.kategori}/$id");
+  //   final token = await PreferenceHandler.getToken();
+  //   final response = await http.delete(
+  //     url,
+  //     body: {"name": name},
+  //     headers: {"Accept": "application/json", "Authorization": "Bearer $token"},
+  //   );
+  //   if (response.statusCode == 200) {
+  //     return DeleteModel.fromJson(json.decode(response.body));
+  //   } else {
+  //     final error = json.decode(response.body);
+  //     throw Exception(error["message"] ?? "Register gagal");
+  //   }
+  // }
+
+  static Future<DeleteModel> deleteKategori({required int id}) async {
     final url = Uri.parse("${Endpoint.kategori}/$id");
     final token = await PreferenceHandler.getToken();
+
     final response = await http.delete(
       url,
-      body: {"name": name},
       headers: {"Accept": "application/json", "Authorization": "Bearer $token"},
     );
+
     if (response.statusCode == 200) {
       return DeleteModel.fromJson(json.decode(response.body));
     } else {
       final error = json.decode(response.body);
-      throw Exception(error["message"] ?? "Register gagal");
+      throw Exception(error["message"] ?? "Failed to delete cart");
     }
   }
 }

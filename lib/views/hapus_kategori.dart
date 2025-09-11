@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:laundry_jaya/api/kategori.dart';
 import 'package:laundry_jaya/models/get_kategori_model.dart';
-import 'package:laundry_jaya/shared_preferences/shared_preferences.dart';
 
 class DeleteScreen extends StatefulWidget {
   const DeleteScreen({super.key});
@@ -11,7 +10,7 @@ class DeleteScreen extends StatefulWidget {
 }
 
 class _DeleteScreenState extends State<DeleteScreen> {
-  Future<GetKategoriModel>? _kategoriFuture;
+  late Future<GetKategoriModel>? _kategoriFuture;
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -26,75 +25,91 @@ class _DeleteScreenState extends State<DeleteScreen> {
     });
   }
 
-  Future<void> _confirmDeleteKategori(GetImage kategori) async {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Text(
-            "Konfirmasi Hapus",
-            style: TextStyle(fontFamily: "Montserrat_Medium"),
-          ),
-          content: Text(
-            "Apakah Anda yakin ingin menghapus kategori '${kategori.name}'?",
-            style: TextStyle(fontFamily: "OpenSans_Regular"),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text(
-                "Batal",
-                style: TextStyle(
-                  fontFamily: "Baloo",
-                  color: Colors.black,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () async {
-                Navigator.of(context).pop();
-                await _deleteKategori(kategori);
-              },
-              child: const Text(
-                "Hapus",
-                style: TextStyle(
-                  color: Colors.red,
-                  fontFamily: "Baloo",
-                  fontSize: 16,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
+  // Future<void> _confirmDeleteKategori(GetImage kategori) async {
+  //   return showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         backgroundColor: Colors.white,
+  //         title: Text(
+  //           "Konfirmasi Hapus",
+  //           style: TextStyle(fontFamily: "Montserrat_Medium"),
+  //         ),
+  //         content: Text(
+  //           "Apakah Anda yakin ingin menghapus kategori '${kategori.name}'?",
+  //           style: TextStyle(fontFamily: "OpenSans_Regular"),
+  //         ),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () => Navigator.of(context).pop(),
+  //             child: const Text(
+  //               "Batal",
+  //               style: TextStyle(
+  //                 fontFamily: "Baloo",
+  //                 color: Colors.black,
+  //                 fontSize: 16,
+  //               ),
+  //             ),
+  //           ),
+  //           TextButton(
+  //             onPressed: () async {
+  //               Navigator.of(context).pop();
+  //               await _deleteKategori(kategori);
+  //             },
+  //             child: const Text(
+  //               "Hapus",
+  //               style: TextStyle(
+  //                 color: Colors.red,
+  //                 fontFamily: "Baloo",
+  //                 fontSize: 16,
+  //               ),
+  //             ),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
+
+  Future<void> _refreshCategories() async {
+    setState(() {
+      _kategoriFuture = KategoriAPI.getKategori();
+    });
   }
 
-  Future<void> _deleteKategori(GetImage kategori) async {
-    try {
-      final result = await KategoriAPI.hapusKategori(
-        name: kategori.name ?? "",
-        id: kategori.id ?? 0,
-      );
+  Future<void> _deleteCategory(int id, String name) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Hapus Kategori"),
+        content: Text("Yakin mau hapus kategori $name?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text("Batal"),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text("Hapus", style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(result.message ?? "Kategori berhasil dihapus"),
-          backgroundColor: Colors.green,
-        ),
-      );
+    if (confirm == true) {
+      try {
+        await KategoriAPI.deleteKategori(id: id);
 
-      // Refresh list
-      _loadKategori();
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Gagal menghapus kategori: $e"),
-          backgroundColor: Colors.red,
-        ),
-      );
+        _refreshCategories();
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Kategori $name berhasil dihapus")),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Gagal hapus kategori: $e")));
+      }
     }
   }
 
@@ -144,15 +159,12 @@ class _DeleteScreenState extends State<DeleteScreen> {
             ],
           ),
           Expanded(
-            child: FutureBuilder<String?>(
-              future: PreferenceHandler.getUserRole(),
+            child: FutureBuilder<GetKategoriModel>(
+              future: _kategoriFuture,
               builder: (context, roleSnapshot) {
                 if (roleSnapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
-
-                final userRole = roleSnapshot.data ?? "customer";
-                final isOwner = userRole == "owner";
 
                 return FutureBuilder<GetKategoriModel>(
                   future: _kategoriFuture,
@@ -247,17 +259,19 @@ class _DeleteScreenState extends State<DeleteScreen> {
                                       ],
                                     ),
                                   ),
-                                  if (isOwner) ...[
-                                    IconButton(
-                                      icon: const Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
-                                      ),
-                                      onPressed: () =>
-                                          _confirmDeleteKategori(kategori),
-                                      tooltip: "Hapus Kategori",
+
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
                                     ),
-                                  ],
+                                    onPressed: () => _deleteCategory(
+                                      kategori.id!,
+                                      kategori.name ?? "Unnamed Category",
+                                    ),
+                                    //     _confirmDeleteKategori(kategori),
+                                    // tooltip: "Hapus Kategori",
+                                  ),
                                 ],
                               ),
                             ),

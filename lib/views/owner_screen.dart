@@ -6,6 +6,7 @@ import 'package:laundry_jaya/models/get_kategori_model.dart';
 import 'package:laundry_jaya/models/item_model.dart';
 import 'package:laundry_jaya/views/edit_kategori.dart';
 import 'package:laundry_jaya/views/hapus_kategori.dart';
+import 'package:laundry_jaya/views/lihat_pesanan_screen.dart';
 import 'package:laundry_jaya/views/tambah_item_screen.dart';
 import 'package:laundry_jaya/views/tambah_kategori_screen.dart';
 
@@ -252,7 +253,7 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                       Icons.list_alt,
                       Color(0xFFFFB74D),
                       () {
-                        // context.pushNamed(LihatPesananScreen.id);
+                        context.pushNamed(LihatPesananScreen.id);
                       },
                     ),
                     _buildActionButton(

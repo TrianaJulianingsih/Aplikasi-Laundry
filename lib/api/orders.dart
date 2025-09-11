@@ -46,12 +46,15 @@ class OrdersAPI {
   static Future<GetOrderModel> getOrders() async {
     final url = Uri.parse(Endpoint.order);
     final token = await PreferenceHandler.getToken();
+    print("TOKEN: $token");
 
     final response = await http.get(
       url,
       headers: {"Accept": "application/json", "Authorization": "Bearer $token"},
     );
 
+    print("Get Orders Response: ${response.statusCode}");
+    print("Get Orders Body: ${response.body}");
     if (response.statusCode == 200) {
       return GetOrderModel.fromJson(json.decode(response.body));
     } else {
@@ -61,12 +64,12 @@ class OrdersAPI {
   }
 
   static Future<ChangeStatusModel> changeStatus({
-    required int statusId,
+    required int orderId,
     required String status,
   }) async {
     try {
       final token = await PreferenceHandler.getToken();
-      final url = Uri.parse(Endpoint.status(statusId));
+      final url = Uri.parse(Endpoint.OrderStatus(orderId));
       final body = {"status": status};
       final response = await http.post(
         url,

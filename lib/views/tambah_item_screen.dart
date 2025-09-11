@@ -5,7 +5,6 @@ import 'package:laundry_jaya/api/kategori.dart';
 import 'package:laundry_jaya/api/services.dart';
 import 'package:laundry_jaya/models/get_kategori_model.dart';
 import 'package:laundry_jaya/models/get_layanan_model.dart';
-import 'package:laundry_jaya/utils/role_checker.dart';
 
 class TambahItemScreen extends StatefulWidget {
   static const id = "/tambahItemScreen";
@@ -31,15 +30,15 @@ class _TambahItemScreenState extends State<TambahItemScreen> {
   void initState() {
     super.initState();
     _loadKategori();
-    _checkRole();
+    // _checkRole();
   }
 
-  void _checkRole() async {
-    final isOwner = await RoleChecker.isOwner();
-    if (!isOwner) {
-      Navigator.pop(context);
-    }
-  }
+  // void _checkRole() async {
+  //   final isOwner = await RoleChecker.isOwner();
+  //   if (!isOwner) {
+  //     Navigator.pop(context);
+  //   }
+  // }
 
   void _loadKategori() {
     setState(() {

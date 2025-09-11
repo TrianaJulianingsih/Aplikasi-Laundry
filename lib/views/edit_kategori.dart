@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:laundry_jaya/api/kategori.dart';
@@ -76,18 +77,6 @@ class _EditKategoriScreenState extends State<EditKategoriScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text("Edit Kategori"),
-      //   backgroundColor: Color(0xFF03A9F4),
-      //   foregroundColor: Colors.white,
-      //   actions: [
-      //     if (_isLoading)
-      //       Padding(
-      //         padding: const EdgeInsets.all(8.0),
-      //         child: CircularProgressIndicator(color: Colors.white),
-      //       ),
-      //   ],
-      // ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

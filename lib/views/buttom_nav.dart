@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:laundry_jaya/utils/role_checker.dart';
 import 'package:laundry_jaya/views/home.dart';
 import 'package:laundry_jaya/views/owner_screen.dart';
 import 'package:laundry_jaya/views/profile_screen.dart';
@@ -14,46 +13,24 @@ class ButtomNav extends StatefulWidget {
 }
 
 class _ButtomNavState extends State<ButtomNav> {
+  // bool appBar = true;
+  bool isCheck = false;
+  bool isCheckSwitch = false;
   int _selectedIndex = 0;
-  List<Widget> _widgetOptions = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeScreens();
-  }
-
-  void _initializeScreens() async {
-    final isOwner = await RoleChecker.isOwner();
-
-    setState(() {
-      _widgetOptions = isOwner
-          ? <Widget>[
-              OwnerDashboard(),
-              RiwayatPesananScreen(),
-              ProfileAPIScreen(),
-            ]
-          : <Widget>[HomeScreen(), RiwayatPesananScreen(), ProfileAPIScreen()];
-    });
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  static const List<Widget> _widgetOptions = <Widget>[
+    HomeScreen(),
+    RiwayatPesananScreen(),
+    ProfileAPIScreen(),
+    OwnerDashboard(),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    if (_widgetOptions.isEmpty) {
-      return Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
-
     return Scaffold(
+      // appBar: AppBar(title: Text("Dashbord"), backgroundColor: Colors.blue),
       body: _widgetOptions[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        backgroundColor: const Color.fromARGB(255, 15, 216, 166),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Image.asset("assets/images/home1.png", width: 30, height: 30),
@@ -86,7 +63,30 @@ class _ButtomNavState extends State<ButtomNav> {
             ),
             label: 'Profil',
           ),
+          BottomNavigationBarItem(
+            icon: Image.asset("assets/images/user.png", width: 30, height: 30),
+            activeIcon: Image.asset(
+              "assets/images/user (1).png",
+              width: 30,
+              height: 30,
+            ),
+            label: 'Admin',
+          ),
         ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
+        unselectedItemColor: const Color.fromARGB(255, 12, 92, 65),
+        onTap: (value) {
+          // print(value);
+          // print("Nilai SelecetedIndex Before : $_selectedIndex");
+
+          // print("Nilai BotNav : $value");
+          setState(() {
+            _selectedIndex = value;
+          });
+          // print("Nilai SelecetedIndex After: $_selectedIndex");
+        },
+        // onTap: _onItemTapped,
       ),
     );
   }
