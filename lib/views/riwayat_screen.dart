@@ -40,6 +40,7 @@ class _RiwayatPesananScreenState extends State<RiwayatPesananScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue[100],
       body: Stack(
         children: [
           Padding(

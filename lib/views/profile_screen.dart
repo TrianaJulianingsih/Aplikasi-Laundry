@@ -181,6 +181,7 @@ class _ProfileAPIScreenState extends State<ProfileAPIScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue[100],
       body: Column(
         children: [
           Stack(

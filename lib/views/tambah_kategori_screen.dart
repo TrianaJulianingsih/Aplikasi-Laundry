@@ -49,7 +49,7 @@ class _TambahKategoriScreenState extends State<TambahKategoriScreen> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(result), backgroundColor: Colors.red),
+          SnackBar(content: Text(result), backgroundColor: Colors.green),
         );
       }
     }
@@ -100,9 +100,9 @@ class _TambahKategoriScreenState extends State<TambahKategoriScreen> {
               ),
             ],
           ),
-          Expanded( 
+          Expanded(
             child: Padding(
-              padding: EdgeInsets.all(10), 
+              padding: EdgeInsets.all(10),
               child: Form(
                 key: _formKey,
                 child: ListView(
@@ -134,7 +134,12 @@ class _TambahKategoriScreenState extends State<TambahKategoriScreen> {
                                       color: Colors.grey[600],
                                     ),
                                     SizedBox(height: 8),
-                                    Text("Tap untuk pilih gambar", style: TextStyle(fontFamily: "OpenSans_Regular"),),
+                                    Text(
+                                      "Tap untuk pilih gambar",
+                                      style: TextStyle(
+                                        fontFamily: "OpenSans_Regular",
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -144,16 +149,18 @@ class _TambahKategoriScreenState extends State<TambahKategoriScreen> {
                     TextFormField(
                       controller: nameController,
                       decoration: InputDecoration(
-                        labelText: "Nama Kategori", labelStyle: TextStyle(fontFamily: "OpenSans_Regular"),
+                        labelText: "Nama Kategori",
+                        labelStyle: TextStyle(fontFamily: "OpenSans_Regular"),
                         prefixIcon: Icon(Icons.category),
                       ),
-                      validator: (val) =>
-                          val == null || val.isEmpty ? "Nama wajib diisi" : null,
+                      validator: (val) => val == null || val.isEmpty
+                          ? "Nama wajib diisi"
+                          : null,
                     ),
                     SizedBox(height: 12),
                     ElevatedButton.icon(
                       onPressed: loading ? null : handleSubmit,
-                      icon: Icon(Icons.add, color: Colors.white,),
+                      icon: Icon(Icons.add, color: Colors.white),
                       label: loading
                           ? SizedBox(
                               width: 20,
@@ -163,10 +170,17 @@ class _TambahKategoriScreenState extends State<TambahKategoriScreen> {
                                 strokeWidth: 2,
                               ),
                             )
-                          : Text("Tambah Kategori", style: TextStyle(color: Colors.white, fontSize: 18, fontFamily: "Baloo"),),
+                          : Text(
+                              "Tambah Kategori",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontFamily: "Baloo",
+                              ),
+                            ),
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 14),
-                        backgroundColor: Color(0xFF0D47A1)
+                        backgroundColor: Color(0xFF0D47A1),
                       ),
                     ),
                   ],

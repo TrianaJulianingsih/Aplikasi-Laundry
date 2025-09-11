@@ -64,9 +64,13 @@ class _ButtomNavState extends State<ButtomNav> {
             label: 'Profil',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset("assets/images/user.png", width: 30, height: 30),
+            icon: Image.asset(
+              "assets/images/admin1.png",
+              width: 30,
+              height: 30,
+            ),
             activeIcon: Image.asset(
-              "assets/images/user (1).png",
+              "assets/images/admin2.png",
               width: 30,
               height: 30,
             ),
@@ -77,16 +81,10 @@ class _ButtomNavState extends State<ButtomNav> {
         selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
         unselectedItemColor: const Color.fromARGB(255, 12, 92, 65),
         onTap: (value) {
-          // print(value);
-          // print("Nilai SelecetedIndex Before : $_selectedIndex");
-
-          // print("Nilai BotNav : $value");
           setState(() {
             _selectedIndex = value;
           });
-          // print("Nilai SelecetedIndex After: $_selectedIndex");
         },
-        // onTap: _onItemTapped,
       ),
     );
   }

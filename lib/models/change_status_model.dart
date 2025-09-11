@@ -47,10 +47,14 @@ class Data {
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    id: json["id"],
-    customerId: json["customer_id"],
+    id: json["id"] is int ? json["id"] : int.tryParse(json["id"].toString()),
+    customerId: json["customer_id"] is int
+        ? json["customer_id"]
+        : int.tryParse(json["customer_id"].toString()),
     layanan: json["layanan"],
-    serviceTypeId: json["service_type_id"],
+    serviceTypeId: json["service_type_id"] is int
+        ? json["service_type_id"]
+        : int.tryParse(json["service_type_id"].toString()),
     status: json["status"],
     createdAt: json["created_at"] == null
         ? null
@@ -84,7 +88,7 @@ class ServiceType {
   ServiceType({this.id, this.name, this.createdAt, this.updatedAt});
 
   factory ServiceType.fromJson(Map<String, dynamic> json) => ServiceType(
-    id: json["id"],
+    id: json["id"] is int ? json["id"] : int.tryParse(json["id"].toString()),
     name: json["name"],
     createdAt: json["created_at"] == null
         ? null

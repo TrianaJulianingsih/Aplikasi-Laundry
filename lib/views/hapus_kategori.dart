@@ -103,7 +103,10 @@ class _DeleteScreenState extends State<DeleteScreen> {
         _refreshCategories();
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Kategori $name berhasil dihapus")),
+          SnackBar(
+            content: Text("Kategori $name berhasil dihapus"),
+            backgroundColor: Colors.green,
+          ),
         );
       } catch (e) {
         ScaffoldMessenger.of(
@@ -133,7 +136,6 @@ class _DeleteScreenState extends State<DeleteScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Row(
-                    // mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       IconButton(
                         onPressed: () {

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:laundry_jaya/api/orders.dart';
 import 'package:laundry_jaya/models/get_order_model.dart';
+import 'package:laundry_jaya/views/status_screen.dart';
 
 class LihatPesananScreen extends StatefulWidget {
   const LihatPesananScreen({super.key});
@@ -29,9 +30,9 @@ class _LihatPesananScreenState extends State<LihatPesananScreen> {
   Color _getStatusColor(String status) {
     switch (status) {
       case 'Baru':
-        return Colors.blue;
+        return Color(0xFFFFB74D);
       case 'Selesai':
-        return Colors.green;
+        return Color(0xFF03A9F4);
       default:
         return Colors.grey;
     }
@@ -67,58 +68,74 @@ class _LihatPesananScreenState extends State<LihatPesananScreen> {
                     itemBuilder: (context, index) {
                       final order = orders[index];
                       final items = order.items ?? [];
-                      return Card(
-                        color: Colors.white,
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        child: ListTile(
-                          title: Text(
-                            order.layanan ?? "Tanpa Layanan",
-                            style: TextStyle(fontFamily: "OpenSans_SemiBold"),
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Tanggal: ${order.createdAt?.toLocal()}",
-                                style: TextStyle(
-                                  fontFamily: "OpenSans_Regular",
-                                ),
+                      return InkWell(
+                        onTap: () async {
+                          final changed = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => StatusScreen(
+                                orderId: order.id!,
+                                currentStatus: order.status ?? "",
                               ),
-                              ...items.map(
-                                (i) => Text(
-                                  "• ${i.serviceItem?.name}",
+                            ),
+                          );
+                          if (changed == true) {
+                            _loadOrders();
+                          }
+                        },
+                        child: Card(
+                          color: Colors.white,
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
+                          child: ListTile(
+                            title: Text(
+                              order.layanan ?? "Tanpa Layanan",
+                              style: TextStyle(fontFamily: "OpenSans_SemiBold"),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Tanggal: ${order.createdAt?.toLocal()}",
                                   style: TextStyle(
                                     fontFamily: "OpenSans_Regular",
                                   ),
                                 ),
-                              ),
-                              Text(
-                                "Harga: ${order.total}",
-                                style: TextStyle(
-                                  fontFamily: "OpenSans_SemiBold",
-                                  color: Color(0xFFFFB74D),
+                                ...items.map(
+                                  (i) => Text(
+                                    "• ${i.serviceItem?.name}",
+                                    style: TextStyle(
+                                      fontFamily: "OpenSans_Regular",
+                                    ),
+                                  ),
                                 ),
+                                Text(
+                                  "Harga: ${order.total}",
+                                  style: TextStyle(
+                                    fontFamily: "OpenSans_SemiBold",
+                                    color: Color(0xFFFFB74D),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            trailing: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 4,
                               ),
-                            ],
-                          ),
-                          trailing: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: _getStatusColor(order.status ?? ''),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(
-                              order.status?.toUpperCase() ?? '-',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontFamily: "Baloo",
+                              decoration: BoxDecoration(
+                                color: _getStatusColor(order.status ?? ''),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                order.status?.toUpperCase() ?? '-',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontFamily: "Baloo",
+                                ),
                               ),
                             ),
                           ),
@@ -143,14 +160,23 @@ class _LihatPesananScreenState extends State<LihatPesananScreen> {
             child: Padding(
               padding: EdgeInsets.only(top: 10),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Riwayat Pesanan",
-                    style: TextStyle(
-                      fontFamily: "Montserrat_Bold",
-                      fontSize: 20,
-                      color: Colors.white,
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_back, color: Colors.white),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 120),
+                    child: Text(
+                      "List Pesanan",
+                      style: TextStyle(
+                        fontFamily: "Montserrat_Bold",
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ],

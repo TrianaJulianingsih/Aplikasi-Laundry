@@ -6,7 +6,6 @@ import 'package:laundry_jaya/views/item_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-  // final bool? appBar;
   static const id = "/homeScreen";
 
   @override
@@ -17,7 +16,6 @@ class _TugasTujuhState extends State<HomeScreen> {
   final _formKey = GlobalKey<FormState>();
   final _refreshKey = UniqueKey();
   Future<GetKategoriModel>? _kategoriFuture;
-  // final TextEditingController _namaController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -38,11 +36,8 @@ class _TugasTujuhState extends State<HomeScreen> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         }
-
-        // final userRole = snapshot.data ?? "customer";
-        // final isOwner = userRole == "owner";
-
         return Scaffold(
+          backgroundColor: Colors.blue[100],
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -61,7 +56,7 @@ class _TugasTujuhState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 30),
+                            padding: const EdgeInsets.only(top: 10),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -69,57 +64,36 @@ class _TugasTujuhState extends State<HomeScreen> {
                                   padding: const EdgeInsets.only(left: 25),
                                 ),
                                 SizedBox(width: 200),
-                                // if (isOwner)
-                                //   Padding(
-                                //     padding: const EdgeInsets.only(right: 8),
-                                //     child: Row(
-                                //       children: [
-                                //         IconButton(
-                                //           onPressed: () {
-                                //             Navigator.pushNamed(
-                                //               context,
-                                //               TambahItemScreen.id,
-                                //             );
-                                //           },
-                                //           icon: Icon(
-                                //             Icons.add,
-                                //             color: Colors.white,
-                                //           ),
-                                //         ),
-                                //         IconButton(
-                                //           onPressed: () {
-                                //             Navigator.pushNamed(
-                                //               context,
-                                //               TambahItemScreen.id,
-                                //             );
-                                //           },
-                                //           icon: const Icon(
-                                //             Icons.add,
-                                //             color: Colors.white,
-                                //           ),
-                                //         ),
-                                //       ],
-                                //     ),
-                                //   ),
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 25),
-                            child: FutureBuilder<String?>(
-                              future: PreferenceHandler.getUserName(),
-                              builder: (context, snapshot) {
-                                final userName = snapshot.data ?? "User";
-                                return Text(
-                                  userName,
-                                  style: TextStyle(
-                                    fontFamily: "Montserrat_Bold",
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                  ),
-                                );
-                              },
-                            ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 5),
+                                child: Image.asset(
+                                  "assets/images/logo.png",
+                                  height: 100,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15),
+                                child: FutureBuilder<String?>(
+                                  future: PreferenceHandler.getUserName(),
+                                  builder: (context, snapshot) {
+                                    final userName = snapshot.data ?? "User";
+                                    return Text(
+                                      "Hello, $userName",
+                                      style: TextStyle(
+                                        fontFamily: "Montserrat_Bold",
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -256,7 +230,7 @@ class _TugasTujuhState extends State<HomeScreen> {
                             physics: NeverScrollableScrollPhysics(),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
+                                  crossAxisCount: 4,
                                 ),
                             itemCount: kategoriList.length,
                             itemBuilder: (context, index) {
@@ -319,17 +293,61 @@ class _TugasTujuhState extends State<HomeScreen> {
                           );
                         },
                       ),
-                      // if (!isOwner) ...[
-                      //   SizedBox(height: 30),
-                      //   Text(
-                      //     "Riwayat",
-                      //     style: TextStyle(
-                      //       fontFamily: "Montserrat_Bold",
-                      //       fontSize: 16,
-                      //     ),
-                      //   ),
-
-                      // ],
+                      Center(
+                        child: Container(
+                          height: 150,
+                          width: 370,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            // image: DecorationImage(
+                            //   image: AssetImage(
+                            //     "assets/images/background discount.jpg",
+                            //   ),
+                            //   fit: BoxFit.cover,
+                            // ),
+                          ),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Kiloan",
+                                      style: TextStyle(
+                                        fontFamily: "OpenSans_SemiBold",
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    Text(
+                                      "Discount 5% untuk laundry pertama",
+                                      style: TextStyle(
+                                        fontFamily: "OpenSans_Regular",
+                                        fontSize: 14,
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  // bottom: 80,
+                                  left: 30,
+                                ),
+                                child: Image.asset(
+                                  "assets/images/discount.png",
+                                  width: 60,
+                                  height: 60,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

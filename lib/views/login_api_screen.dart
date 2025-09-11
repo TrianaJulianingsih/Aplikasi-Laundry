@@ -85,15 +85,37 @@ class _MyWidgetState extends State<LoginScreen> {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            Container(
-              height: double.infinity,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage("assets/images/background.jpg"),
+            Stack(
+              children: [
+                Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  decoration: BoxDecoration(color: Color(0xFF03A9F4)),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: AssetImage("assets/images/logo.png"),
+                        radius: 40,
+                        backgroundColor: Color(0xFF03A9F4),
+                      ),
+                      CircleAvatar(
+                        backgroundImage: AssetImage("assets/images/logo.png"),
+                        radius: 40,
+                        backgroundColor: Color(0xFF03A9F4),
+                      ),
+                      CircleAvatar(
+                        backgroundImage: AssetImage("assets/images/logo.png"),
+                        radius: 40,
+                        backgroundColor: Color(0xFF03A9F4),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             Container(
               padding: EdgeInsets.only(top: 68),
