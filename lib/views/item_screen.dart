@@ -51,16 +51,6 @@ class _ItemScreenState extends State<ItemScreen> {
     });
   }
 
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   final route = ModalRoute.of(context);
-  //   if (route != null) {
-  //     route.addScopedWillPopCallback(() {
-  //       _loadData();
-  //       return SynchronousFuture(true);
-  //     });
-  //   }
-  // }
   void _addItem(int itemId, String itemName, double itemPrice) {
     setState(() {
       if (selectedItems.containsKey(itemId)) {
@@ -236,7 +226,7 @@ class _ItemScreenState extends State<ItemScreen> {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pop(context); // Tutup bottom sheet
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -277,6 +267,7 @@ class _ItemScreenState extends State<ItemScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue[100],
       body: RefreshIndicator(
         onRefresh: () async {
           _loadData();

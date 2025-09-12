@@ -67,14 +67,6 @@ class _PostApiScreenState extends State<PostApiScreen> {
       setState(() {});
       isLoading = false;
     }
-    // final user = User(email: email, password: password, name: name);
-    // await DbHelper.registerUser(user);
-    // Future.delayed(const Duration(seconds: 1)).then((value) {
-    //   isLoading = false;
-    //   ScaffoldMessenger.of(
-    //     context,
-    //   ).showSnackBar(const SnackBar(content: Text("Pendaftaran berhasil")));
-    // });
   }
 
   SafeArea buildLayer() {
@@ -87,28 +79,28 @@ class _PostApiScreenState extends State<PostApiScreen> {
             // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Register API",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                "Register",
+                style: TextStyle(fontSize: 25, fontFamily: "Montserrat_Bold"),
               ),
               height(24),
-              buildTitle("Email Address"),
+              buildTitle("Email"),
               height(12),
               buildTextField(
-                hintText: "Enter your email",
+                hintText: "Masukkan Email",
                 controller: emailController,
               ),
               height(16),
-              buildTitle("Name"),
+              buildTitle("Nama"),
               height(12),
               buildTextField(
-                hintText: "Enter your name",
+                hintText: "Masukkan Nama",
                 controller: nameController,
               ),
               height(16),
-              buildTitle("Password"),
+              buildTitle("Kata Sandi"),
               height(12),
               buildTextField(
-                hintText: "Enter your password",
+                hintText: "Masukkan Password",
                 isPassword: true,
                 controller: passwordController,
               ),
@@ -141,7 +133,7 @@ class _PostApiScreenState extends State<PostApiScreen> {
                     registerUser();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Color(0xFF0D47A1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
@@ -152,7 +144,7 @@ class _PostApiScreenState extends State<PostApiScreen> {
                           "Daftar",
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                            fontFamily: "Baloo",
                             color: Colors.white,
                           ),
                         ),
@@ -171,7 +163,10 @@ class _PostApiScreenState extends State<PostApiScreen> {
                   ),
                   Text(
                     "Or Sign In With",
-                    // style: TextStyle(fontSize: 12, color: AppColor.gray88),
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontFamily: "OpenSans_Regular",
+                    ),
                   ),
                   Expanded(
                     child: Container(
@@ -186,17 +181,30 @@ class _PostApiScreenState extends State<PostApiScreen> {
 
               height(16),
               SizedBox(
-                height: 48,
+                height: 56,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor: Color(0xFF0D47A1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, "/loginapi");
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [width(4), Text("Login")],
+                    children: [
+                      width(4),
+                      Text(
+                        "Login",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: "Baloo",
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -211,12 +219,7 @@ class _PostApiScreenState extends State<PostApiScreen> {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/images/background.png"),
-          fit: BoxFit.cover,
-        ),
-      ),
+      decoration: const BoxDecoration(color: Color(0xFF03A9F4)),
     );
   }
 
@@ -230,6 +233,7 @@ class _PostApiScreenState extends State<PostApiScreen> {
       obscureText: isPassword ? isVisibility : false,
       decoration: InputDecoration(
         hintText: hintText,
+        hintStyle: TextStyle(fontFamily: "OpenSans_Regular"),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
           borderSide: BorderSide(
@@ -257,7 +261,6 @@ class _PostApiScreenState extends State<PostApiScreen> {
                 },
                 icon: Icon(
                   isVisibility ? Icons.visibility_off : Icons.visibility,
-                  // color: AppColor.gray88,
                 ),
               )
             : null,
@@ -271,7 +274,10 @@ class _PostApiScreenState extends State<PostApiScreen> {
   Widget buildTitle(String text) {
     return Row(
       children: [
-        // Text(text, style: TextStyle(fontSize: 12, color: AppColor.gray88)),
+        Text(
+          text,
+          style: TextStyle(fontSize: 14, fontFamily: "OpenSans_Medium"),
+        ),
       ],
     );
   }

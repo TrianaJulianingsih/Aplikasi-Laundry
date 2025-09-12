@@ -64,22 +64,11 @@ class _MyWidgetState extends State<LoginScreen> {
       setState(() {});
       isLoading = false;
     }
-    // final user = User(email: email, password: password, name: name);
-    // await DbHelper.registerUser(user);
-    // Future.delayed(const Duration(seconds: 1)).then((value) {
-    //   isLoading = false;
-    //   ScaffoldMessenger.of(
-    //     context,
-    //   ).showSnackBar(const SnackBar(content: Text("Pendaftaran berhasil")));
-    // });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-
-      // ),
       body: Form(
         key: _formKey,
         child: Stack(
@@ -132,17 +121,15 @@ class _MyWidgetState extends State<LoginScreen> {
             Padding(
               padding: EdgeInsets.only(top: 92),
               child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // SizedBox(height: 42),
                   Padding(
-                    padding: const EdgeInsets.only(right: 50),
+                    padding: const EdgeInsets.only(right: 55),
                     child: Text(
                       "Selamat Datang Kembali",
                       style: TextStyle(
-                        fontSize: 25,
+                        fontSize: 20,
                         fontWeight: FontWeight.w700,
-                        fontFamily: "Gilroy_Medium",
+                        fontFamily: "Montserrat_Bold",
                       ),
                     ),
                   ),
@@ -150,12 +137,12 @@ class _MyWidgetState extends State<LoginScreen> {
                   Padding(
                     padding: const EdgeInsets.only(right: 20, left: 35),
                     child: Text(
-                      "Selamat datang kembali di Laundry Jaya. Have a good time",
+                      "Selamat datang kembali di Laundry Jaya. Cucian selesai, kamu santai!",
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: const Color.fromARGB(204, 67, 66, 66),
-                        fontFamily: "Gilroy_Regular",
+                        fontFamily: "OpenSans_Regular",
                       ),
                     ),
                   ),
@@ -181,7 +168,7 @@ class _MyWidgetState extends State<LoginScreen> {
                                 color: const Color.fromARGB(223, 85, 85, 88),
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
-                                fontFamily: "Gilroy_Regular",
+                                fontFamily: "OpenSans_Regular",
                               ),
                             ),
                             contentPadding: EdgeInsets.only(top: 8),
@@ -195,16 +182,6 @@ class _MyWidgetState extends State<LoginScreen> {
                             ),
                             border: InputBorder.none,
                           ),
-                          // validator: (value) {
-                          //   if (value == null || value.isEmpty) {
-                          //     return "Email tidak boleh kosong";
-                          //   } else if (!value.contains("@")) {
-                          //     return "Email tidak valid";
-                          //   } else if (RegExp(r'^\d').hasMatch(value)) {
-                          //     return "Email tidak valid";
-                          //   }
-                          //   return null;
-                          // },
                         ),
                         Divider(
                           indent: 15,
@@ -230,18 +207,10 @@ class _MyWidgetState extends State<LoginScreen> {
                                 color: const Color.fromARGB(195, 61, 61, 62),
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
-                                fontFamily: "Gilroy_Regular",
+                                fontFamily: "OpenSans_Regular",
                               ),
                             ),
                           ),
-                          // validator: (value) {
-                          //   if (value == null || value.isEmpty) {
-                          //     return "Password tidak boleh kosong";
-                          //   } else if (RegExp(r'^\d').hasMatch(value)) {
-                          //     return "Password tidak valid";
-                          //   }
-                          //   return null;
-                          // },
                         ),
                       ],
                     ),
@@ -254,7 +223,7 @@ class _MyWidgetState extends State<LoginScreen> {
                       style: TextStyle(
                         color: const Color.fromARGB(148, 62, 62, 70),
                         fontSize: 12,
-                        fontFamily: "Poppins_Regular",
+                        fontFamily: "OpenSans_Regular",
                       ),
                     ),
                   ),
@@ -265,69 +234,9 @@ class _MyWidgetState extends State<LoginScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         loginUser();
-                        //Error dan sukses menggunakan ScaffoldMessenger dan formKey
-                        // if (_formKey.currentState!.validate()) {
-                        //   // ScaffoldMessenger.of(context).showSnackBar(
-                        //   //   SnackBar(content: Text("Form Validasi Berhasil")),
-                        //   // );
-                        //   context.pushReplacement(TugasDelapan());
-                        //   ScaffoldMessenger.of(context).showSnackBar(
-                        //     SnackBar(
-                        //       content: Text("Form Validasi Berhasil"),
-                        //       duration: Duration(microseconds: 2),
-                        //     ),
-                        //   );
-                        // } else {
-                        //   showDialog(
-                        //     context: context,
-                        //     builder: (BuildContext context) {
-                        //       return AlertDialog(
-                        //         title: Text("Login failed"),
-                        //         content: Column(
-                        //           mainAxisSize: MainAxisSize.min,
-                        //           children: [
-                        //             Text("Email or password is invalid"),
-                        //             SizedBox(height: 20),
-                        //             // Image.asset(
-                        //             //   'assets/images/rendang.jpeg',
-                        //             //   width: 90,
-                        //             //   height: 100,
-                        //             //   fit: BoxFit.cover,
-                        //             // ),
-                        //             Lottie.asset(
-                        //               'assets/animations/false.json',
-                        //               width: 100,
-                        //               height: 100,
-                        //               fit: BoxFit.cover,
-                        //             ),
-                        //           ],
-                        //         ),
-                        //         actions: [
-                        //           TextButton(
-                        //             child: Text("Batal"),
-                        //             onPressed: () {
-                        //               Navigator.of(context).pop();
-                        //             },
-                        //           ),
-                        //           TextButton(
-                        //             child: Text("Ok"),
-                        //             onPressed: () {
-                        //               Navigator.of(context).pop();
-                        //             },
-                        //           ),
-                        //         ],
-                        //       );
-                        //     },
-                        //   );
-                        // }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(
-                          255,
-                          111,
-                          30,
-                          192,
-                        ),
+                        backgroundColor: Color(0xFF03A9F4),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -336,8 +245,8 @@ class _MyWidgetState extends State<LoginScreen> {
                         "Masuk",
                         style: TextStyle(
                           color: Colors.white,
-                          fontFamily: "Montserrat",
-                          // fontWeight: FontWeight.w600,
+                          fontFamily: "Baloo",
+                          fontSize: 16,
                         ),
                       ),
                     ),
@@ -360,7 +269,7 @@ class _MyWidgetState extends State<LoginScreen> {
                           "Atau masuk dengan",
                           style: TextStyle(
                             color: const Color.fromARGB(200, 62, 62, 70),
-                            fontFamily: "Poppins_Medium",
+                            fontFamily: "OpenSans_Medium",
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
@@ -401,7 +310,6 @@ class _MyWidgetState extends State<LoginScreen> {
                                 image: AssetImage("assets/images/google.png"),
                               ),
                             ),
-                            // child: Text("Postingan"),
                           ),
                         ),
                         SizedBox(width: 30),
@@ -422,7 +330,6 @@ class _MyWidgetState extends State<LoginScreen> {
                                 ),
                               ),
                             ),
-                            // child: Text("Follower"),
                           ),
                         ),
                         SizedBox(width: 30),
@@ -453,7 +360,7 @@ class _MyWidgetState extends State<LoginScreen> {
                         text: "Belum punya akun? ",
                         style: TextStyle(
                           color: const Color.fromARGB(182, 100, 100, 106),
-                          fontFamily: "Poppins_Regular",
+                          fontFamily: "OpenSans_Regular",
                           fontWeight: FontWeight.w400,
                         ),
                         children: [
@@ -464,9 +371,9 @@ class _MyWidgetState extends State<LoginScreen> {
                               },
                             text: " Daftar",
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 14,
                               color: const Color.fromARGB(255, 11, 39, 164),
-                              fontFamily: "Poppins_Bold",
+                              fontFamily: "Baloo",
                             ),
                           ),
                         ],

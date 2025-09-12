@@ -300,12 +300,10 @@ class _TugasTujuhState extends State<HomeScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.white,
-                            // image: DecorationImage(
-                            //   image: AssetImage(
-                            //     "assets/images/background discount.jpg",
-                            //   ),
-                            //   fit: BoxFit.cover,
-                            // ),
+                            image: DecorationImage(
+                              image: AssetImage("assets/images/banner1.jpg"),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                           child: Row(
                             children: [

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:laundry_jaya/api/endpoint/endpoint.dart';
 import 'package:laundry_jaya/models/add_item_model.dart';
+import 'package:laundry_jaya/models/delete_kategori_model.dart';
 import 'package:laundry_jaya/models/item_model.dart';
 import 'package:laundry_jaya/shared_preferences/shared_preferences.dart';
 
@@ -73,6 +74,23 @@ class ItemsAPI {
     } else {
       final error = json.decode(response.body);
       throw Exception(error["message"] ?? "Gagal mengambil data layanan");
+    }
+  }
+
+  static Future<DeleteModel> deleteItem({required int id}) async {
+    final url = Uri.parse("${Endpoint.items}/$id");
+    final token = await PreferenceHandler.getToken();
+
+    final response = await http.delete(
+      url,
+      headers: {"Accept": "application/json", "Authorization": "Bearer $token"},
+    );
+
+    if (response.statusCode == 200) {
+      return DeleteModel.fromJson(json.decode(response.body));
+    } else {
+      final error = json.decode(response.body);
+      throw Exception(error["message"] ?? "Failed to delete cart");
     }
   }
 }

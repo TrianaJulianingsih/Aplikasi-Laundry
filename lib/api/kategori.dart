@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:laundry_jaya/api/endpoint/endpoint.dart';
-import 'package:laundry_jaya/models/delete_model.dart';
+import 'package:laundry_jaya/models/delete_kategori_model.dart';
 import 'package:laundry_jaya/models/get_kategori_model.dart';
 import 'package:laundry_jaya/models/kategori_model.dart';
 import 'package:laundry_jaya/models/update_kategori_model.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:laundry_jaya/api/orders.dart';
-import 'package:laundry_jaya/models/get_order_model.dart';
 
 class BuatPesananScreen extends StatefulWidget {
   final Map<int, int> selectedItems;
@@ -26,6 +25,7 @@ class _BuatPesananScreenState extends State<BuatPesananScreen> {
     int totalItem = widget.selectedItems.values.fold(0, (a, b) => a + b);
 
     return Scaffold(
+      backgroundColor: Colors.blue[100],
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -70,7 +70,10 @@ class _BuatPesananScreenState extends State<BuatPesananScreen> {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 15, top: 15),
-            child: Text("Pilih Layanan:", style: TextStyle(fontSize: 16, fontFamily: "OpenSans_Medium")),
+            child: Text(
+              "Pilih Layanan:",
+              style: TextStyle(fontSize: 16, fontFamily: "OpenSans_Medium"),
+            ),
           ),
           Row(
             children: [
@@ -83,7 +86,7 @@ class _BuatPesananScreenState extends State<BuatPesananScreen> {
                   });
                 },
               ),
-              Text("Antar", style: TextStyle(fontFamily: "OpenSans_Regular"),),
+              Text("Antar", style: TextStyle(fontFamily: "OpenSans_Regular")),
               Radio(
                 value: "Jemput",
                 groupValue: layanan,
@@ -93,21 +96,17 @@ class _BuatPesananScreenState extends State<BuatPesananScreen> {
                   });
                 },
               ),
-              Text("Jemput", style: TextStyle(fontFamily: "OpenSans_Regular"),),
+              Text("Jemput", style: TextStyle(fontFamily: "OpenSans_Regular")),
             ],
-          ),
-          SizedBox(height: 16),
-
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Text("Item yang dipilih:", style: TextStyle(fontSize: 16, fontFamily: "OpenSans_Medium")),
           ),
           Expanded(
             child: ListView(
               children: widget.selectedItems.entries.map((entry) {
                 return ListTile(
-                  title: Text("Item ID: ${entry.key}", style: TextStyle(fontFamily: "OpenSans_Medium"),),
-                  subtitle: Text("Jumlah: ${entry.value}", style: TextStyle(fontFamily: "OpenSans_Regular"),),
+                  title: Text(
+                    "Jumlah item yang dipilih: ${entry.value}",
+                    style: TextStyle(fontFamily: "OpenSans_Medium"),
+                  ),
                 );
               }).toList(),
             ),
@@ -116,11 +115,17 @@ class _BuatPesananScreenState extends State<BuatPesananScreen> {
           Divider(),
           Padding(
             padding: const EdgeInsets.only(left: 20, bottom: 8),
-            child: Text("Total Item: $totalItem", style: TextStyle(fontFamily: "OpenSans_Regular"),),
+            child: Text(
+              "Total Item: $totalItem",
+              style: TextStyle(fontFamily: "OpenSans_Regular"),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20),
-            child: Text("Total Harga: Rp ${widget.totalPrice.toStringAsFixed(0)}", style: TextStyle(fontFamily: "OpenSans_Regular"),),
+            child: Text(
+              "Total Harga: Rp ${widget.totalPrice.toStringAsFixed(0)}",
+              style: TextStyle(fontFamily: "OpenSans_Regular"),
+            ),
           ),
 
           SizedBox(height: 20),
@@ -136,7 +141,10 @@ class _BuatPesananScreenState extends State<BuatPesananScreen> {
                 ),
                 child: isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text("Pesan", style: TextStyle(color: Colors.white)),
+                    : const Text(
+                        "Pesan",
+                        style: TextStyle(color: Colors.white),
+                      ),
               ),
             ),
           ),

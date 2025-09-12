@@ -5,6 +5,7 @@ import 'package:laundry_jaya/extension/navigtaion.dart';
 import 'package:laundry_jaya/models/get_kategori_model.dart';
 import 'package:laundry_jaya/models/item_model.dart';
 import 'package:laundry_jaya/views/edit_kategori.dart';
+import 'package:laundry_jaya/views/hapus_item_screen.dart';
 import 'package:laundry_jaya/views/hapus_kategori.dart';
 import 'package:laundry_jaya/views/lihat_pesanan_screen.dart';
 import 'package:laundry_jaya/views/tambah_item_screen.dart';
@@ -201,7 +202,7 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                             _totalItems = snapshot.data!.data!.length;
                           }
                           return _buildStatCard(
-                            "Total Layanan",
+                            "Total Item",
                             _totalItems.toString(),
                             Icons.local_laundry_service,
                             Colors.green,
@@ -272,6 +273,15 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                       Colors.red,
                       () {
                         context.push(DeleteScreen());
+                      },
+                    ),
+
+                    _buildActionButton(
+                      "Hapus Item",
+                      Icons.delete,
+                      Colors.red,
+                      () {
+                        context.push(DeleteItemScreen());
                       },
                     ),
                   ],

@@ -1,42 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:laundry_jaya/api/kategori.dart';
-import 'package:laundry_jaya/models/get_kategori_model.dart';
+import 'package:laundry_jaya/api/items.dart';
+import 'package:laundry_jaya/models/item_model.dart';
 
-class DeleteScreen extends StatefulWidget {
-  const DeleteScreen({super.key});
+class DeleteItemScreen extends StatefulWidget {
+  const DeleteItemScreen({super.key});
 
   @override
-  State<DeleteScreen> createState() => _DeleteScreenState();
+  State<DeleteItemScreen> createState() => _DeleteItemScreenState();
 }
 
-class _DeleteScreenState extends State<DeleteScreen> {
-  late Future<GetKategoriModel>? _kategoriFuture;
+class _DeleteItemScreenState extends State<DeleteItemScreen> {
+  late Future<ItemModel>? _itemFuture;
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _loadKategori();
+    _loadDelete();
   }
 
-  void _loadKategori() {
+  void _loadDelete() {
     setState(() {
-      _kategoriFuture = KategoriAPI.getKategori();
+      _itemFuture = ItemsAPI.getAllItem();
     });
   }
 
   Future<void> _refreshCategories() async {
     setState(() {
-      _kategoriFuture = KategoriAPI.getKategori();
+      _itemFuture = ItemsAPI.getAllItem();
     });
   }
 
-  Future<void> _deleteCategory(int id, String name) async {
+  Future<void> _deleteItem(int id, String name) async {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Hapus Kategori"),
-        content: Text("Yakin mau hapus kategori $name?"),
+        title: const Text("Hapus Item"),
+        content: Text("Yakin mau hapus item $name?"),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -52,20 +52,20 @@ class _DeleteScreenState extends State<DeleteScreen> {
 
     if (confirm == true) {
       try {
-        await KategoriAPI.deleteKategori(id: id);
+        await ItemsAPI.deleteItem(id: id);
 
         _refreshCategories();
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Kategori $name berhasil dihapus"),
+            content: Text("Item $name berhasil dihapus"),
             backgroundColor: Colors.green,
           ),
         );
       } catch (e) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text("Gagal hapus kategori: $e")));
+        ).showSnackBar(SnackBar(content: Text("Gagal hapus item: $e")));
       }
     }
   }
@@ -98,9 +98,9 @@ class _DeleteScreenState extends State<DeleteScreen> {
                         icon: Icon(Icons.arrow_back, color: Colors.white),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 80),
+                        padding: const EdgeInsets.only(left: 90),
                         child: Text(
-                          "Hapus Kategori",
+                          "Hapus Item",
                           style: TextStyle(
                             fontFamily: "Montserrat_Bold",
                             fontSize: 20,
@@ -115,44 +115,44 @@ class _DeleteScreenState extends State<DeleteScreen> {
             ],
           ),
           Expanded(
-            child: FutureBuilder<GetKategoriModel>(
-              future: _kategoriFuture,
+            child: FutureBuilder<ItemModel>(
+              future: _itemFuture,
               builder: (context, roleSnapshot) {
                 if (roleSnapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
 
-                return FutureBuilder<GetKategoriModel>(
-                  future: _kategoriFuture,
+                return FutureBuilder<ItemModel>(
+                  future: _itemFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Center(
                         child: Text(
-                          "Gagal memuat kategori: ${snapshot.error}",
+                          "Gagal memuat item: ${snapshot.error}",
                           style: const TextStyle(color: Colors.red),
                         ),
                       );
                     } else if (!snapshot.hasData ||
                         snapshot.data!.data!.isEmpty) {
                       return const Center(
-                        child: Text("Tidak ada kategori tersedia"),
+                        child: Text("Tidak ada item tersedia"),
                       );
                     }
 
-                    final kategoriList = snapshot.data!.data!;
+                    final itemList = snapshot.data!.data!;
 
                     return RefreshIndicator(
                       onRefresh: () async {
-                        _loadKategori();
+                        _loadDelete();
                       },
                       child: ListView.builder(
                         controller: _scrollController,
                         padding: const EdgeInsets.all(16),
-                        itemCount: kategoriList.length,
+                        itemCount: itemList.length,
                         itemBuilder: (context, index) {
-                          final kategori = kategoriList[index];
+                          final kategori = itemList[index];
                           return Card(
                             color: Colors.white,
                             elevation: 4,
@@ -165,38 +165,6 @@ class _DeleteScreenState extends State<DeleteScreen> {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    width: 60,
-                                    height: 60,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      color: Color(0xFF03A9F4),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child:
-                                          (kategori.imageUrl != null &&
-                                              kategori.imageUrl!.isNotEmpty)
-                                          ? Image.network(
-                                              kategori.imageUrl!,
-                                              fit: BoxFit.cover,
-                                              errorBuilder:
-                                                  (
-                                                    context,
-                                                    error,
-                                                    stackTrace,
-                                                  ) => const Icon(
-                                                    Icons.image_not_supported,
-                                                    color: Colors.grey,
-                                                  ),
-                                            )
-                                          : const Icon(
-                                              Icons.category,
-                                              color: Colors.grey,
-                                            ),
-                                    ),
-                                  ),
-
                                   const SizedBox(width: 16),
                                   Expanded(
                                     child: Column(
@@ -221,9 +189,9 @@ class _DeleteScreenState extends State<DeleteScreen> {
                                       Icons.delete,
                                       color: Colors.red,
                                     ),
-                                    onPressed: () => _deleteCategory(
+                                    onPressed: () => _deleteItem(
                                       kategori.id!,
-                                      kategori.name ?? "Unnamed Category",
+                                      kategori.name ?? "Unnamed Item",
                                     ),
                                     //     _confirmDeleteKategori(kategori),
                                     // tooltip: "Hapus Kategori",
